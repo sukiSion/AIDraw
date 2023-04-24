@@ -4,6 +4,8 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
-
-    <style name="Theme.AIDraw" parent="Base.Theme.AIDraw" />
+    <style name="Theme.AIDraw" parent="Base.Theme.AIDraw" >
+        <!-- 应用透明状态栏 -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
 </resources>
