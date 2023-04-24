@@ -5,6 +5,4 @@ data class ResultBean(
     val is_generating: Boolean,
     val duration:Float,
     val average_duration: Float
-) {
-
-}
+)

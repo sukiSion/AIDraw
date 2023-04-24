@@ -7,6 +7,6 @@ import retrofit2.http.POST
 
 interface AppService {
 
-    @POST(ApiUrl.getPic)
-    suspend fun getPhoto(@Body requestBean: RequestBean): ResultBean
+    @POST(ApiUrl.sdUrl)
+    suspend fun sdWebUINetWork(@Body requestBean: RequestBean): ResultBean
 }

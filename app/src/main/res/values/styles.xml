@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="prompr_input_style" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+    </style>
+    <style name="item_selected_text_style" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textColor">@color/blue_b4ff</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="item_noselect_text_style" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textColor">@color/grey_d8d8</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>

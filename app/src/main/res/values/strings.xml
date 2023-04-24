@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">AI Draw</string>
+    <string name="create">Create</string>
+    <string name="start_now">Start Now!</string>
+    <string name="position_hint">Position Prompt(请输入正面关键词)</string>
+    <string name="negation_hint">Negation Prompt(请输入反面关键词)</string>
+    <string name="home_title">AI Home</string>
+    <string name="setting_title">Setting</string>
+
 </resources>

@@ -1,5 +1,7 @@
 package com.example.aidraw.net
 
+import com.example.aipainter.logic.net.NetInterceptor
+import com.example.aipainter.logic.net.StableDiffusionInterceptor
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -32,6 +34,8 @@ class RetrofitClient private constructor() {
         val DEFAULT_TIMEOUT = 1000L * 60L
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(level = HttpLoggingInterceptor.Level.BODY))
+            .addInterceptor(StableDiffusionInterceptor())
+            .addInterceptor(NetInterceptor())
             .retryOnConnectionFailure(true)
             .readTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
             .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
