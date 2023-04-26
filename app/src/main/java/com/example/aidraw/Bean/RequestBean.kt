@@ -64,8 +64,8 @@ data class RequestBean(
     val session_hash: String
 ){
 
-    // 开启高清修复
-    fun openHDRepire(){
+    // 开启或者关闭高清修复
+    fun changeHDRepire(switch: Boolean){
         fn_index = ConstantPool.fn_index_open_hd
         data = listOf(true).toTypedArray()
     }
@@ -84,12 +84,12 @@ data class RequestBean(
      */
     fun setGenerateConfig(
         fn_index: Int,
-        openHdRepire: Boolean = true,
-        width: Int = 512,
-        height: Int = 512,
-        scale: Int = 2,
-        adjustmentWidth: Int = 0,
-        adjustmentHeight: Int = 0
+        openHdRepire: Boolean ,
+        width: Int,
+        height: Int,
+        scale: Float,
+        adjustmentWidth: Int,
+        adjustmentHeight: Int
     ){
         this.fn_index = fn_index
         data = listOf<Any>(

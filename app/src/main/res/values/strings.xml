@@ -6,5 +6,18 @@
     <string name="negation_hint">Negation Prompt(请输入反面关键词)</string>
     <string name="home_title">AI Home</string>
     <string name="setting_title">Setting</string>
-
+    <string name="hd_repair">HD Repair(高清修复 , 从512x512调整到1024x1024)</string>
+    <string name="face_repair">Face Repair(面部修复)</string>
+    <string name="submit">Submit</string>
+    <string name="submit_tip">The configuration takes effect after submission(配置在提交之后生效)</string>
+    <string name="hide_submit_tip">click me no more prompt(点我不再提示)</string>
+    <string name="width">Width :</string>
+    <string name="height">Height :</string>
+    <string name="step">Steps :</string>
+    <string name="scale">Scale :</string>
+    <string name="sampler">Sampler :</string>
+    <string name="denoising">Denoising :</string>
+    <string name="select_samplar">Select Samplar</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 </resources>

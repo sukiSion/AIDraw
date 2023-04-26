@@ -2,6 +2,7 @@ package com.example.aidraw
 
 import android.app.Application
 import android.content.Context
+import com.tencent.mmkv.MMKV
 
 class MyApplication: Application() {
 
@@ -17,5 +18,6 @@ class MyApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        MMKV.initialize(this);
     }
 }

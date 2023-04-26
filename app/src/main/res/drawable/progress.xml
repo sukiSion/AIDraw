@@ -1,0 +1,32 @@
+<vector xmlns:tools="http://schemas.android.com/tools"
+    android:autoMirrored="true" android:height="20dp"
+    android:viewportHeight="1024" android:viewportWidth="1024"
+    android:width="20dp"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="VectorRaster">
+
+    <path android:fillColor="#00000000" android:fillType="evenOdd"
+        android:pathData="M0,0L1024,0 1024,1024 0,1024z">
+    </path>
+
+    <path android:fillType="evenOdd"
+        android:pathData="M1008.2,6.4c12.7,9.1 17.7,21.4 15.4,36.5l-146.3,877.6c-2,11 -8.1,19.6 -18.3,25.7 -5.2,2.9 -11.3,4.6 -17.7,4.6 -4.2,0 -8.8,-1 -13.7,-3L560.8,853.3l-130.4,157.5c-6.9,8.9 -16.2,13.1 -28,13.1 -4.9,0 -9.1,-0.8 -12.7,-2.3a35.5,35.5 0,0 1,-17.4 -13.5A35.3,35.3 0,0 1,365.8 987.4v-189.6a48.8,48.8 0,0 1,11.3 -31.2L853.4,195 266.2,688.3a48.8,48.8 0,0 1,-49.4 8l-193.9,-77.3C8.8,613.7 1.2,603.2 0.1,587.5c-0.8,-15.2 5.2,-26.5 18.3,-33.8L969.1,5.1c5.8,-3.5 11.8,-5.1 18.3,-5.1 7.7,0 14.6,2.2 20.7,6.4z"
+        android:strokeColor="#FFFFFF" android:strokeWidth="3">
+        <aapt:attr name="android:fillColor">
+            <gradient android:endX="924" android:endY="14.922"
+                android:startX="100" android:startY="38.5" android:type="linear">
+                <item android:color="#FF33FFD6" android:offset="0"/>
+                <item android:color="#FF0087FF" android:offset="0.487"/>
+                <item android:color="#FFD155FF" android:offset="1"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+
+
+
+
+
+
+
+</vector>

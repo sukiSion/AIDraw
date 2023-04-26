@@ -3,13 +3,19 @@ package com.example.aidraw.util
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.graphics.LinearGradient
 import android.graphics.Rect
+import android.graphics.Shader
 import android.os.Build
 import android.provider.Settings
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import com.example.aidraw.R
 import com.example.aidraw.pool.ConstantPool
+import org.w3c.dom.Text
 
 object ExUtil {
     // 获取设备id
@@ -84,6 +90,33 @@ object ExUtil {
         } else {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         }
+    }
+
+    // 设置渐变色字体
+    fun setLinearGradientText(
+        textView: TextView,
+        context: Context
+    ){
+
+        textView.viewTreeObserver.addOnDrawListener {
+            val linearGradient = LinearGradient(
+                0f ,
+                0f ,
+                textView.width.toFloat(),
+                textView.height.toFloat(),
+                intArrayOf(
+                    ContextCompat.getColor(context , R.color.green_ffd6),
+                    ContextCompat.getColor(context , R.color.blue_87ff),
+                    ContextCompat.getColor(context , R.color.purple_55ff),
+
+                    ),
+                null,
+                Shader.TileMode.CLAMP
+            )
+            textView.paint.setShader(linearGradient)
+            textView.invalidate()
+        }
+
     }
 
 }
