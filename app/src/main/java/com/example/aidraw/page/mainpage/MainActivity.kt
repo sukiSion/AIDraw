@@ -4,14 +4,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.example.aidraw.R
 import com.example.aidraw.databinding.ActivityMainBinding
+import com.example.aidraw.page.mainpage.homepage.HomeFragment
+import com.example.aidraw.page.mainpage.settingpage.SettingFragment
 import com.example.aidraw.util.ExUtil
+import com.example.aidraw.viewmodel.SDWebUICreateViewModel
+import com.example.aidraw.viewmodel.SettingViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationBarView.OnItemSelectedListener
@@ -20,7 +26,6 @@ class MainActivity : AppCompatActivity() {
 
 
     private lateinit var activityMainBinding: ActivityMainBinding
-    private lateinit var appName: TextView
     private lateinit var bottomNavLayout: BottomNavigationView
     private lateinit var containerLayout: ViewPager2
     private lateinit var fragments: List<Fragment>
@@ -29,7 +34,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var homeFragment: HomeFragment
     private lateinit var pageChangeCallback: OnPageChangeCallback
     private lateinit var bottomItemSelectedListener: NavigationBarView.OnItemSelectedListener
-
+    private val settingViewModel: SettingViewModel by viewModels()
+    private val  sdWebUICreateViewModel:SDWebUICreateViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             layoutInflater
         )
         setContentView(activityMainBinding.root)
-        val layouParams: ConstraintLayout.LayoutParams = activityMainBinding.appName.layoutParams as LayoutParams
+        val layouParams: ConstraintLayout.LayoutParams = activityMainBinding.containerLayout.layoutParams as LayoutParams
         layouParams.topMargin = ExUtil.getStatusBarHeight(this)
         ExUtil.transparentStatusBar(this)
         init()
@@ -59,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         pageChangeCallback = object : OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+
                 when(position){
                     0 -> {
                         bottomNavLayout.selectedItemId = R.id.home_item
@@ -79,6 +86,9 @@ class MainActivity : AppCompatActivity() {
                 positionOffsetPixels: Int
             ) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                if(ExUtil.isSoftKeyboardVisible(this@MainActivity)){
+                    ExUtil.closeKeyboard(this@MainActivity)
+                }
             }
         }
 

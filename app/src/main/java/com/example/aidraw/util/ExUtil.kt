@@ -2,16 +2,79 @@ package com.example.aidraw.util
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.LinearGradient
 import android.graphics.Rect
+import android.graphics.Shader
 import android.os.Build
 import android.provider.Settings
+import android.util.Base64
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
+import com.example.aidraw.R
 import com.example.aidraw.pool.ConstantPool
+import java.io.File
+import java.io.FileInputStream
 
 object ExUtil {
+
+
+    // 手机图片文件转base64
+    fun encodeToBase64(file: File): String {
+        val inputStream = FileInputStream(file)
+        val buffer = ByteArray(file.length().toInt())
+        inputStream.read(buffer)
+        val outputStream = java.io.ByteArrayOutputStream()
+        val byteArray: ByteArray = outputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
+
+    /**
+     * 关闭软键盘
+     */
+    fun closeKeyboard(activity: Activity) {
+        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(activity.window.decorView.windowToken, 0)
+    }
+
+    /**
+     * 切换软键盘显示/隐藏状态
+     */
+    fun toggleKeyboard(activity: Activity) {
+        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+
+    // 判断软键盘是否弹出的代码
+    fun isSoftKeyboardVisible(activity: Activity): Boolean {
+        val decorView = activity.window.decorView
+        val visibleHeight = Rect().apply {
+            decorView.getWindowVisibleDisplayFrame(this)
+        }.height()
+
+        val screenHeight = decorView.height
+
+        // If the difference is greater than a threshold value, assume the keyboard is visible
+        return (screenHeight - visibleHeight) > (screenHeight / 4)
+    }
+
+    // 土司
+    fun toast(context: Context , @StringRes value: Int){
+        Toast.makeText(
+            context,
+            value,
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
     // 获取设备id
     fun getAndroidId(context: Context) :String{
 
@@ -84,6 +147,33 @@ object ExUtil {
         } else {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         }
+    }
+
+    // 设置渐变色字体
+    fun setLinearGradientText(
+        textView: TextView,
+        context: Context
+    ){
+
+        textView.viewTreeObserver.addOnDrawListener {
+            val linearGradient = LinearGradient(
+                0f ,
+                0f ,
+                textView.width.toFloat(),
+                textView.height.toFloat(),
+                intArrayOf(
+                    ContextCompat.getColor(context , R.color.green_ffd6),
+                    ContextCompat.getColor(context , R.color.blue_87ff),
+                    ContextCompat.getColor(context , R.color.purple_55ff),
+
+                    ),
+                null,
+                Shader.TileMode.CLAMP
+            )
+            textView.paint.setShader(linearGradient)
+            textView.invalidate()
+        }
+
     }
 
 }

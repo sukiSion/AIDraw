@@ -4,30 +4,488 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:id="@+id/setting_page_title_layout"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/setting_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_title"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:fontFamily="@font/eagle_lake_regular">
+        </TextView>
+
+
+        <Button
+            android:paddingVertical="0dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/config_submit_button"
+            android:layout_width="wrap_content"
+            android:paddingHorizontal="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_height="wrap_content"
+            android:text="@string/submit"
+            android:background="@drawable/shape_submit_button"
+            android:textSize="15sp"
+            android:textAllCaps="false"
+            android:textColor="@color/white">
+        </Button>
+
+    </RelativeLayout>
+
+
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/setting_page_title_layout"
         app:layout_constraintBottom_toBottomOf="parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="20dp">
 
-            <RelativeLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="0dp"
+                android:padding="8dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                >
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/setting_page_title_layout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:id="@+id/submit_tip_layout">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/warn_icon">
+                        </ImageView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/submit_tip"
+                            android:textSize="17sp"
+                            android:gravity="center"
+                            android:layout_marginStart="12dp"
+                            android:textColor="@color/red_5265">
+                        </TextView>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <TextView
+                        android:id="@+id/hide_submit_tip"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/hide_submit_tip"
+                        android:textSize="17sp"
+                        android:textColor="@color/black">
+                    </TextView>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/repair_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/face_repair_layout">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="0dp"
+                            app:shapeAppearanceOverlay="@style/image_shape"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/sion_bg"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:scaleType="centerCrop">
+                        </com.google.android.material.imageview.ShapeableImageView>
+
+                        <ImageView
+                            android:layout_marginStart="16dp"
+                            android:layout_marginBottom="12dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:id="@+id/face_repair_radio_icon"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/icon_noselect">
+                        </ImageView>
+
+                        <TextView
+                            app:layout_constraintStart_toEndOf="@id/face_repair_radio_icon"
+                            app:layout_constraintTop_toTopOf="@id/face_repair_radio_icon"
+                            app:layout_constraintBottom_toBottomOf="@id/face_repair_radio_icon"
+                            android:textSize="17sp"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="@string/face_repair">
+                        </TextView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/hd_repair_layout"
+                        >
+
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="0dp"
+                            app:shapeAppearanceOverlay="@style/image_shape"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/eden_bg"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:scaleType="centerCrop">
+                        </com.google.android.material.imageview.ShapeableImageView>
+
+                        <ImageView
+                            android:layout_marginStart="16dp"
+                            android:layout_marginBottom="12dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:id="@+id/hd_repair_radio_icon"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/icon_noselect">
+                        </ImageView>
+
+                        <TextView
+                            app:layout_constraintStart_toEndOf="@id/hd_repair_radio_icon"
+                            app:layout_constraintTop_toTopOf="@id/hd_repair_radio_icon"
+                            app:layout_constraintBottom_toBottomOf="@id/hd_repair_radio_icon"
+                            android:textSize="17sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constrainedWidth="true"
+                            android:textColor="@color/white"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="@string/hd_repair">
+                        </TextView>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sampler"
+                        android:textSize="17sp"
+                        android:textStyle="italic"
+                        android:textColor="@color/black"
+                        android:id="@+id/sampler_title">
+
+                    </TextView>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginEnd="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:padding="2dp"
+                        android:id="@+id/sampler_layout">
+
+                        <EditText
+                            android:id="@+id/sampler"
+                            android:textSize="17sp"
+                            android:textColor="@color/blue_b4ff"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:background="@drawable/shape_input_bg">
+                        </EditText>
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
 
-            </RelativeLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="30dp">
+
+
+                    <TextView
+                        android:id="@+id/width_title"
+                        android:textStyle="italic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/width"
+                        android:textSize="17sp"
+                        android:textColor="@color/black">
+                    </TextView>
+
+                    <SeekBar
+                        android:progressDrawable="@drawable/seek_bar_style"
+                        android:thumb="@drawable/progress"
+                        android:layout_marginStart="4dp"
+                        android:splitTrack="false"
+                        android:id="@+id/witdth_seek_bar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </SeekBar>
+
+                    <TextView
+                        android:id="@+id/width"
+                        android:layout_width="40dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="@color/blue_b4ff">
+                    </TextView>
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="30dp">
+
+
+                    <TextView
+                        android:id="@+id/height_title"
+                        android:textStyle="italic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/height"
+                        android:textSize="17sp"
+                        android:textColor="@color/black">
+                    </TextView>
+
+                    <SeekBar
+                        android:splitTrack="false"
+                        android:progressDrawable="@drawable/seek_bar_style"
+                        android:thumb="@drawable/progress"
+                        android:layout_marginStart="4dp"
+                        android:id="@+id/height_seek_bar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </SeekBar>
+
+                    <TextView
+                        android:id="@+id/height"
+                        android:layout_width="40dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="@color/blue_b4ff">
+                    </TextView>
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="30dp">
+
+
+                    <TextView
+                        android:id="@+id/scale_title"
+                        android:textStyle="italic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/scale"
+                        android:textSize="17sp"
+                        android:textColor="@color/black">
+                    </TextView>
+
+                    <SeekBar
+                        android:splitTrack="false"
+                        android:progressDrawable="@drawable/seek_bar_style"
+                        android:thumb="@drawable/progress"
+                        android:layout_marginStart="4dp"
+                        android:id="@+id/scale_seek_bar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </SeekBar>
+
+                    <TextView
+                        android:id="@+id/scale"
+                        android:layout_width="40dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="@color/blue_b4ff">
+                    </TextView>
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="30dp">
+
+
+                    <TextView
+                        android:id="@+id/steps_title"
+                        android:textStyle="italic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/step"
+                        android:textSize="17sp"
+                        android:textColor="@color/black">
+                    </TextView>
+
+                    <SeekBar
+                        android:splitTrack="false"
+                        android:progressDrawable="@drawable/seek_bar_style"
+                        android:thumb="@drawable/progress"
+                        android:layout_marginStart="4dp"
+                        android:id="@+id/steps_seek_bar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </SeekBar>
+
+                    <TextView
+                        android:id="@+id/steps"
+                        android:layout_width="40dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="@color/blue_b4ff">
+                    </TextView>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="30dp">
+
+
+                    <TextView
+                        android:id="@+id/denoising_title"
+                        android:textStyle="italic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/denoising"
+                        android:textSize="17sp"
+                        android:textColor="@color/black">
+                    </TextView>
+
+                    <SeekBar
+                        android:splitTrack="false"
+                        android:progressDrawable="@drawable/seek_bar_style"
+                        android:thumb="@drawable/progress"
+                        android:layout_marginStart="4dp"
+                        android:id="@+id/denoising_seek_bar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </SeekBar>
+
+                    <TextView
+                        android:id="@+id/denoising"
+                        android:layout_width="40dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="@color/blue_b4ff">
+                    </TextView>
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
