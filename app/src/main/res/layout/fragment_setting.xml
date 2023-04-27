@@ -38,7 +38,7 @@
             android:layout_alignParentEnd="true"
             android:layout_height="wrap_content"
             android:text="@string/submit"
-            android:background="@drawable/shape_submit_button"
+            android:background="@drawable/shape_button"
             android:textSize="15sp"
             android:textAllCaps="false"
             android:textColor="@color/white">
@@ -63,7 +63,7 @@
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="0dp"
-                android:padding="8dp"
+                android:paddingVertical="8dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -1,21 +1,21 @@
 package com.example.aidraw.pool
 
+import android.os.Environment
 import com.example.aidraw.Bean.SamplarBean
 
 object ConstantPool {
+
+    const val appName = "AIDraw"
+
     const val SessionHash: String = "SessionHash"
     // t2i的fn_index
     const val fn_index_text2img = 77
-    // 开启高清修复的fn_index
-    const val fn_index_open_hd = 80
-    // 设置高清修复配置的fn_index
-    const val fn_index_hd_config = 58
-    // 调整宽度的fn_index
-    const val  fn_index_width = 60
-    // 调整高度的fn_index
-    const val fn_index_height = 62
-    // 调整放大倍率的fn_index
-    const val fn_index_scale = 64
+    // clip反推提示词的fn_index
+    const val fn_index_clip_reverse_prompt = 148
+    // dedpbooru反推提示词的fn_index
+    const val fn_index_deepbooru_reverse_prompt = 149
+    // 图生图的fn_index
+    const val fn_index_image2image = 146
     // 高度和宽度的最小值
     const val min_width_height = 64
     // 高度和宽带的最大值
@@ -30,12 +30,14 @@ object ConstantPool {
     const val max_scale = 4f
     // 最大重绘幅度
     const val max_denoising = 100
-    // 改变高清修复后data中type的结果
-    const val type =  "update"
 
-
+    // 上传图片的Scheme头：
+    const val image_base64_scheme = "data:image/png;base64,"
     // 图片后缀
     const val image_suffix = ".png"
+
+    val album_dir = "${Environment.DIRECTORY_PICTURES}/$appName"
+
 
     val samplers = listOf<SamplarBean>(
         SamplarBean("Euler a" , true),

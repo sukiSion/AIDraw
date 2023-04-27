@@ -3,7 +3,7 @@ package com.example.aidraw.pool
 class CachePool private constructor(
     var scale: Float =  2f,
     var width: Int = 512,
-    var height: Int = 512,
+    var height: Int = 700,
     var steps: Int = 20, // no
     var adjustmentWidth: Int = 0,
     var adjustmentHeight: Int = 0,

@@ -3,26 +3,27 @@ package com.example.aidraw.page.mainpage
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.example.aidraw.R
 import com.example.aidraw.databinding.ActivityMainBinding
-import com.example.aidraw.page.mainpage.homepage.HomeFragment
+import com.example.aidraw.page.mainpage.homepage.Image2ImageFragment
+import com.example.aidraw.page.mainpage.homepage.Text2ImageFragment
 import com.example.aidraw.page.mainpage.settingpage.SettingFragment
 import com.example.aidraw.util.ExUtil
-import com.example.aidraw.viewmodel.SDWebUICreateViewModel
+import com.example.aidraw.viewmodel.Image2ImageViewModel
 import com.example.aidraw.viewmodel.SettingViewModel
+import com.example.aidraw.viewmodel.Text2ImageViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationBarView.OnItemSelectedListener
 
-class MainActivity : AppCompatActivity() {
+class
+MainActivity : AppCompatActivity() {
 
 
     private lateinit var activityMainBinding: ActivityMainBinding
@@ -31,11 +32,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fragments: List<Fragment>
     private lateinit var pageAdapter: PageAdapter
     private lateinit var settingFragment: SettingFragment
-    private lateinit var homeFragment: HomeFragment
+    private lateinit var text2ImageFragment: Text2ImageFragment
+    private lateinit var image2ImageFragment: Image2ImageFragment
     private lateinit var pageChangeCallback: OnPageChangeCallback
     private lateinit var bottomItemSelectedListener: NavigationBarView.OnItemSelectedListener
     private val settingViewModel: SettingViewModel by viewModels()
-    private val  sdWebUICreateViewModel:SDWebUICreateViewModel by viewModels()
+    private val image2ImageViewModel: Image2ImageViewModel by viewModels()
+    private val text2ImageViewModel: Text2ImageViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,10 +55,12 @@ class MainActivity : AppCompatActivity() {
     private fun initData(){
         bottomNavLayout = activityMainBinding.navigationBottomLayout
         containerLayout  = activityMainBinding.containerLayout
-        homeFragment = HomeFragment()
+        text2ImageFragment = Text2ImageFragment()
+        image2ImageFragment = Image2ImageFragment()
         settingFragment = SettingFragment()
         fragments = listOf(
-            homeFragment,
+            text2ImageFragment,
+            image2ImageFragment,
             settingFragment
         )
         pageAdapter = PageAdapter(
@@ -68,9 +73,13 @@ class MainActivity : AppCompatActivity() {
 
                 when(position){
                     0 -> {
-                        bottomNavLayout.selectedItemId = R.id.home_item
+                        bottomNavLayout.selectedItemId = R.id.text_2_image_item
                     }
+
                     1 -> {
+                        bottomNavLayout.selectedItemId = R.id.image_2_image_item
+                    }
+                    2 -> {
                         bottomNavLayout.selectedItemId = R.id.setting_item
                     }
                 }
@@ -95,11 +104,14 @@ class MainActivity : AppCompatActivity() {
         bottomItemSelectedListener = object : OnItemSelectedListener{
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 when(item.itemId){
-                    R.id.home_item ->  {
+                    R.id.text_2_image_item ->  {
                         containerLayout.currentItem = 0
                     }
-                    R.id.setting_item -> {
+                    R.id.image_2_image_item -> {
                         containerLayout.currentItem = 1
+                    }
+                    R.id.setting_item -> {
+                        containerLayout.currentItem = 2
                     }
                 }
                 return true

@@ -21,21 +21,12 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.example.aidraw.R
 import com.example.aidraw.pool.ConstantPool
-import java.io.File
 import java.io.FileInputStream
+import java.io.IOException
 
 object ExUtil {
 
 
-    // 手机图片文件转base64
-    fun encodeToBase64(file: File): String {
-        val inputStream = FileInputStream(file)
-        val buffer = ByteArray(file.length().toInt())
-        inputStream.read(buffer)
-        val outputStream = java.io.ByteArrayOutputStream()
-        val byteArray: ByteArray = outputStream.toByteArray()
-        return Base64.encodeToString(byteArray, Base64.DEFAULT)
-    }
 
     /**
      * 关闭软键盘

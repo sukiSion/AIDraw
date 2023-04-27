@@ -5,10 +5,10 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/app_name"
+        android:id="@+id/text_2_image_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
+        android:text="@string/text_2_image_title"
         android:textSize="40sp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -23,13 +23,13 @@
         android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_name"
+        app:layout_constraintTop_toBottomOf="@id/text_2_image_title"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/position_prompt_layout"
+        android:id="@+id/text_2_image_position_prompt_layout"
         android:padding="2dp">
 
         <EditText
-            android:id="@+id/position_prompt_input"
+            android:id="@+id/text_2_image_position_prompt_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,13 +50,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/position_prompt_layout"
+        app:layout_constraintTop_toBottomOf="@id/text_2_image_position_prompt_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/negation_prompt_layout"
+        android:id="@+id/text_2_image_negation_prompt_layout"
         android:padding="2dp">
 
         <EditText
-            android:id="@+id/negation_prompt_input"
+            android:id="@+id/text_2_image_negation_prompt_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,11 +73,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/create_button"
+        android:id="@+id/text_2_image_create_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/create"
-        app:layout_constraintTop_toBottomOf="@id/negation_prompt_layout"
+        app:layout_constraintTop_toBottomOf="@id/text_2_image_negation_prompt_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textAllCaps="false"
@@ -88,15 +88,7 @@
         android:paddingVertical="10dp">
     </Button>
 
-    <ImageView
-        android:id="@+id/out_out_file"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/create_button"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-    </ImageView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

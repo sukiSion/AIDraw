@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resourse>
+    <paths>
+        <external-path
+            name="poster_sharing"
+            path="/Pictures" />
+        <external-path
+            name="pictures"
+            path="*" />
+        <external-path
+            name="poster_sharing_dcim"
+            path="/DCIM" />
+        <external-path
+            name="poster_dcim_aidraw"
+            path="*/DCIM/AIDraw" />
+        <root-path
+            name="camera_photos"
+            path="" />
+    </paths>
+</resourse>

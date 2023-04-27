@@ -1,6 +1,5 @@
 package com.example.aidraw.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.aidraw.Bean.OutPutBean
@@ -14,13 +13,12 @@ import com.google.gson.Gson
 import com.google.gson.internal.LinkedTreeMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.consume
-import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
@@ -41,7 +39,27 @@ class SDWebUICreateViewModel : ViewModel(){
                     is SDWebUICreateIntent.Text2Image -> {
                         text2image(
                             positionPrompt = it.positionPrompt,
-                            navigationPrompt = it.negationPrompt,
+                            negation = it.negationPrompt,
+                            seesionHash = it.seesionHash
+                        )
+                    }
+                    is SDWebUICreateIntent.DeepBooruReversePrompt -> {
+                        deepBooruReversePrompt(
+                            imageBase64 = it.imageBase64,
+                            seesionHash = it.seesionHash
+                        )
+                    }
+                    is SDWebUICreateIntent.ClipReversePrompt -> {
+                        clipReversePrompt(
+                            imageBase64 = it.imageBase64,
+                            seesionHash = it.seesionHash
+                        )
+                    }
+                    is SDWebUICreateIntent.Image2Image -> {
+                        image2image(
+                            positionPrompt = it.positionPrompt,
+                            negationPrompt = it.negationPrompt,
+                            imageBase64 = it.imageBase64,
                             seesionHash = it.seesionHash
                         )
                     }
@@ -56,23 +74,128 @@ class SDWebUICreateViewModel : ViewModel(){
         }
     }
 
-    private fun text2image(positionPrompt: String , navigationPrompt: String , seesionHash: String){
+    private fun clipReversePrompt(
+        imageBase64: String,
+        seesionHash: String
+    ){
         viewModelScope.launch (context = this.viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
                 context: CoroutineContext, exception: Throwable ->
             viewModelScope.launch(Dispatchers.Main + context) {
-                _SDWebUICreateState.emit(SDWebUICreateState.Text2ImageError(exception))
+                _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(exception))
+            }
+        }){
+            SDWebUIRepo.clipReversePrompt(
+                imageBase64 = imageBase64,
+                sessionHash = seesionHash
+            )
+                .flowOn(Dispatchers.IO)
+                .onStart {
+                withContext(Dispatchers.Main) {
+                    _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                }
+            }
+                .collect{
+                    it.data.takeIf {
+                        it.isNotEmpty()
+                    }?.get(0)?.apply {
+                        if(this is String){
+                            withContext(Dispatchers.Main){
+                                _SDWebUICreateState.emit(SDWebUICreateState.ReversePromptSuccess(this@apply))
+                            }
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun deepBooruReversePrompt(
+        imageBase64: String,
+        seesionHash: String
+    ){
+        viewModelScope.launch (context = this.viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
+                context: CoroutineContext, exception: Throwable ->
+            viewModelScope.launch(Dispatchers.Main + context) {
+                _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(exception))
+            }
+        }){
+            SDWebUIRepo.deepBooruReversePrompt(
+                imageBase64 = imageBase64,
+                sessionHash = seesionHash
+            ).flowOn(Dispatchers.IO)
+                .onStart {
+                withContext(Dispatchers.Main) {
+                    _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                }
+            }
+                .collect{
+                    it.data.takeIf {
+                        it.isNotEmpty()
+                    }?.get(0)?.apply {
+                        if(this is String){
+                            withContext(Dispatchers.Main){
+                                _SDWebUICreateState.emit(SDWebUICreateState.ReversePromptSuccess(this@apply))
+                            }
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun text2image(positionPrompt: String , negation: String , seesionHash: String){
+        viewModelScope.launch (context = this.viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
+                context: CoroutineContext, exception: Throwable ->
+            viewModelScope.launch(Dispatchers.Main + context) {
+                _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(exception))
             }
         }){
             SDWebUIRepo.text2image(
                 positionPrompt = positionPrompt,
-                negationPrompt = navigationPrompt,
+                negationPrompt = negation,
                 sessionHash = seesionHash
             )
                 .flowOn(Dispatchers.IO)
+                .onStart {
+                    withContext(Dispatchers.Main) {
+                        _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                    }
+                }
                 .collect{
-                    handlet2iResultBean(resultBean = it)?.let {
+                    handleResultBean(resultBean = it)?.let {
                         withContext(Dispatchers.Main){
-                            _SDWebUICreateState.emit(SDWebUICreateState.Text2ImageResult(
+                            _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateResult(
+                                ApiUrl.resultUrl + it.name
+                            )
+                            )
+                        }
+                    }
+                }
+        }
+
+    }
+
+    private fun image2image(positionPrompt: String , negationPrompt: String , imageBase64: String , seesionHash: String){
+        viewModelScope.launch (context = this.viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
+                context: CoroutineContext, exception: Throwable ->
+            viewModelScope.launch(Dispatchers.Main + context) {
+                _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(exception))
+            }
+        }){
+            SDWebUIRepo.image2image(
+                positionPrompt = positionPrompt,
+                negationPrompt = negationPrompt,
+                imageBase64 = imageBase64,
+                sessionHash = seesionHash
+            )
+                .flowOn(Dispatchers.IO)
+                .onStart {
+                    withContext(Dispatchers.Main) {
+                        _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                    }
+                }
+                .collect{
+                    handleResultBean(resultBean = it)?.let {
+                        withContext(Dispatchers.Main){
+                            _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateResult(
                                 ApiUrl.resultUrl + it.name
                             )
                             )
@@ -84,8 +207,8 @@ class SDWebUICreateViewModel : ViewModel(){
     }
 
 
-    // 文生图结果解析
-    private inline fun handlet2iResultBean(resultBean: ResultBean): OutPutBean?{
+    // 文生图,图生图结果解析
+    private inline fun handleResultBean(resultBean: ResultBean): OutPutBean?{
         resultBean.data.forEach {
             if(it is List<*>){
                 it.forEach {

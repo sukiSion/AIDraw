@@ -1,4 +1,4 @@
-package com.example.aidraw.page
+package com.example.aidraw.page.mainpage.othepage
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

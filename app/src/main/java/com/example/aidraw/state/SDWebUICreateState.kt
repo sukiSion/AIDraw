@@ -1,6 +1,8 @@
 package com.example.aidraw.state
 
 sealed interface SDWebUICreateState {
-    class Text2ImageResult(val name: String):SDWebUICreateState
-    class Text2ImageError(val exception: Throwable):SDWebUICreateState
+    class ImageCreateResult(val name: String):SDWebUICreateState
+    class ImageCreateError(val exception: Throwable):SDWebUICreateState
+    class ReversePromptSuccess(val prompt: String):SDWebUICreateState
+    object Creating : SDWebUICreateState
 }
