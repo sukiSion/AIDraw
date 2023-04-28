@@ -1,5 +1,6 @@
 package com.example.aidraw.pool
 
+import android.Manifest
 import android.os.Environment
 import com.example.aidraw.Bean.SamplarBean
 
@@ -37,7 +38,14 @@ object ConstantPool {
     const val image_suffix = ".png"
 
     val album_dir = "${Environment.DIRECTORY_PICTURES}/$appName"
+    val album_content = "image/*"
 
+    val takePhotoPermission = Manifest.permission.CAMERA
+
+    val saveFilePermissions = arrayOf(
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    )
 
     val samplers = listOf<SamplarBean>(
         SamplarBean("Euler a" , true),

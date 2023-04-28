@@ -1,17 +1,26 @@
 package com.example.aidraw.util
 
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Rect
 import android.graphics.Shader
+import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Base64
+import android.util.DisplayMetrics
+import android.view.KeyCharacterMap
+import android.view.KeyEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -19,13 +28,84 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.example.aidraw.R
 import com.example.aidraw.pool.ConstantPool
+import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 
 object ExUtil {
 
+    /**
+     * 判断是否有底部导航栏
+     */
+    fun hasNavigationBar(context: Context): Boolean {
+        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val d = windowManager.defaultDisplay
+
+        val realDisplayMetrics = DisplayMetrics()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            d.getRealMetrics(realDisplayMetrics)
+
+            val realHeight = realDisplayMetrics.heightPixels
+            val realWidth = realDisplayMetrics.widthPixels
+
+            val displayMetrics = DisplayMetrics()
+            d.getMetrics(displayMetrics)
+
+            val displayHeight = displayMetrics.heightPixels
+            val displayWidth = displayMetrics.widthPixels
+
+            return (realWidth - displayWidth > 0) || (realHeight - displayHeight > 0)
+        } else {
+            val hasMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey()
+            val hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
+
+            return !hasMenuKey && !hasBackKey
+        }
+    }
+
+    /**
+     * 获取底部导航栏高度
+     */
+    fun getNavigationBarHeight(context: Context): Int {
+        val resources = context.resources
+
+        val id = resources.getIdentifier(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                "navigation_bar_height"
+            } else {
+                "navigation_bar_height"
+            }, "dimen", "android")
+
+        return if (id > 0) {
+            resources.getDimensionPixelSize(id)
+        } else 0
+    }
+
+
+    // 分享图片
+    fun sharePhoto(context:Context , imageUri: Uri, contentResolver: ContentResolver) {
+        val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor: Cursor? = contentResolver.query(imageUri, filePathColumn, null, null, null)
+        cursor?.let {
+                cursor ->
+            cursor.moveToFirst().let {
+                val id = cursor.getColumnIndex(filePathColumn[0])
+                if(id > -1){
+                    val uriPath = FileProvider.getUriForFile(context, "com.sion.ai_painter.fileProvider" , File(cursor.getString(id)))
+                    val intent = Intent(Intent.ACTION_SEND).apply {
+                        setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        putExtra(Intent.EXTRA_STREAM, uriPath)
+                        setType("image/png")
+                    }
+                    context.startActivity(Intent.createChooser(intent , context.getString(com.example.aidraw.R.string.share)))
+                }
+            }
+            cursor.close()
+        }
+    }
 
 
     /**

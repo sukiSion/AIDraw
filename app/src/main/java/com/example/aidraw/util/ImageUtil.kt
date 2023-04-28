@@ -14,6 +14,8 @@ import android.provider.OpenableColumns
 import android.text.TextUtils
 import android.util.Base64
 import androidx.annotation.RequiresApi
+import androidx.core.content.FileProvider
+import com.example.aidraw.pool.ConstantPool
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.File
@@ -321,5 +323,24 @@ object ImageUtil {
             }
         }
         return result
+    }
+
+    fun getCameraUri(
+        context: Context
+    ):Pair<Uri? , String?>{
+        val storageFile: File? =
+            if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) {
+                context.externalCacheDir
+            } else {
+                context.cacheDir
+            }
+
+        val photoFile = File.createTempFile("tmp_image_file", ConstantPool.image_suffix, storageFile).apply {
+            createNewFile()
+            delete()
+        }
+        val fileProviderUri = FileProvider.getUriForFile(context, "com.example.aidraw.fileProvider", photoFile)
+
+        return fileProviderUri to photoFile.absolutePath
     }
 }

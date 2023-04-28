@@ -14,13 +14,18 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.ImageViewTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.aidraw.R
 import com.example.aidraw.databinding.FragmentImage2ImageCreateBinding
 import com.example.aidraw.intent.CreateImageIntent
+import com.example.aidraw.intent.OtherIntent
 import com.example.aidraw.intent.SDWebUICreateIntent
+import com.example.aidraw.state.OtherState
 import com.example.aidraw.state.SDWebUICreateState
 import com.example.aidraw.util.ExUtil
 import com.example.aidraw.util.ImageUtil
+import com.example.aidraw.viewmodel.CreateImageViewModel
+import com.example.aidraw.viewmodel.OtherViewModel
 import com.example.aidraw.viewmodel.SDWebUICreateViewModel
 import kotlinx.coroutines.launch
 import java.io.File
@@ -33,7 +38,8 @@ class Image2ImageCreateFragment(val image2ImageIntent: CreateImageIntent.Image2I
     private lateinit var image2ImageLoadingIcon: ImageView
     private lateinit var image2ImageResult: ImageView
     private lateinit var loadingAnimator: ObjectAnimator
-    private val sdWebUICreateViewModel: SDWebUICreateViewModel by activityViewModels()
+    private val sdWebUICreateViewModel:SDWebUICreateViewModel by activityViewModels()
+    private val otherViewModel:OtherViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -92,6 +98,31 @@ class Image2ImageCreateFragment(val image2ImageIntent: CreateImageIntent.Image2I
     }
 
     private fun handleState(){
+
+        lifecycleScope.launch {
+            otherViewModel.otherState.collect{
+                if(it is OtherState.refreshImageStart){
+                    image2ImageLoadingLayout.visibility = View.VISIBLE
+                    loadingAnimator.start()
+                    image2ImageResult.visibility = View.GONE
+                    image2ImageResult.setImageDrawable(null)
+                    val file = File(image2ImageIntent.path)
+                    if(file.exists()){
+                        ImageUtil.imageToBase64(path = image2ImageIntent.path)?.apply {
+                            sdWebUICreateViewModel.post(
+                                SDWebUICreateIntent.Image2Image(
+                                    positionPrompt = image2ImageIntent.position,
+                                    negationPrompt = image2ImageIntent.negation,
+                                    imageBase64 = this ,
+                                    seesionHash = ExUtil.getAndroidId(requireContext())
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
         lifecycleScope.launch {
             sdWebUICreateViewModel.sdWebUICreateState.collect{
                 it?.let {
@@ -102,9 +133,18 @@ class Image2ImageCreateFragment(val image2ImageIntent: CreateImageIntent.Image2I
                             .load(it.name)
                             .into(object : ImageViewTarget<Drawable>(image2ImageResult){
                                 override fun setResource(resource: Drawable?) {
+                                }
+
+                                override fun onResourceReady(
+                                    resource: Drawable,
+                                    transition: Transition<in Drawable>?
+                                ) {
+                                    super.onResourceReady(resource, transition)
+                                    image2ImageResult.visibility = View.VISIBLE
                                     loadingAnimator.cancel()
                                     image2ImageLoadingLayout.visibility = View.GONE
                                     image2ImageResult.setImageDrawable(resource)
+                                    otherViewModel.post(OtherIntent.refreshImageEnd(it.name))
                                 }
                             })
                     }else if(it is SDWebUICreateState.ImageCreateError){

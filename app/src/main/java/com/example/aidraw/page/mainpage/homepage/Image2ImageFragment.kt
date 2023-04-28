@@ -3,8 +3,10 @@ package com.example.aidraw.page.mainpage.homepage
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +36,7 @@ import com.example.aidraw.pool.SpKey
 import com.example.aidraw.state.SDWebUICreateState
 import com.example.aidraw.util.ExUtil
 import com.example.aidraw.util.ImageUtil
+import com.example.aidraw.util.SavePhotoUtil
 import com.example.aidraw.viewmodel.Image2ImageViewModel
 import com.example.aidraw.viewmodel.SDWebUICreateViewModel
 import com.example.aidraw.viewmodel.Text2ImageViewModel
@@ -55,11 +58,24 @@ class Image2ImageFragment: Fragment() {
     private lateinit var imageImageinputOnFourceBackground: GradientDrawable
     private val image2ImageViewModel: Image2ImageViewModel by activityViewModels()
     private val sdWebUICreateViewModel: SDWebUICreateViewModel by viewModels()
+    private lateinit var openAlbumLauncher: ActivityResultLauncher<String>
+    private lateinit var openCameraLauncher: ActivityResultLauncher<Uri>
+    private lateinit var permissionLauncher: ActivityResultLauncher<String>
+    private var takePhotoUri: Pair<Uri? , String?>? = null
+
     private val loadingDialog: LoadingDialog by lazy {
         LoadingDialog()
     }
+    private val selectImageBottomDialogSheet: SelectImageBottomDialogSheet by lazy {
+        SelectImageBottomDialogSheet(
+            selectAlbumItemCallback = {
+                openAlbumLauncher.launch(ConstantPool.album_content)
+            }
+        ){
+            permissionLauncher.launch(ConstantPool.takePhotoPermission)
+        }
+    }
 
-    private lateinit var launcher: ActivityResultLauncher<String>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -102,14 +118,49 @@ class Image2ImageFragment: Fragment() {
             this.cornerRadius =  ExUtil.dip2px(this@Image2ImageFragment.requireContext() , 10f)
         }
 
-        launcher = registerForActivityResult(
+        openAlbumLauncher = registerForActivityResult(
             ActivityResultContracts.GetContent(),
         ){
             it?.let {
+                selectImageBottomDialogSheet.takeIf {
+                    it.isVisible
+                }?.apply {
+                    this.dismissAllowingStateLoss()
+                }
                 val path = ImageUtil.getFilePathFromURI(requireContext() , it)
                 path?.apply {
                     if(File(this).exists()){
                         image2ImageViewModel.setCurrrentImagePath(this)
+                    }
+                }
+            }
+        }
+
+        openCameraLauncher = registerForActivityResult(
+            ActivityResultContracts.TakePicture()
+        ){
+            it?.apply {
+                selectImageBottomDialogSheet.takeIf {
+                    it.isVisible
+                }?.apply {
+                    this.dismissAllowingStateLoss()
+                }
+                takePhotoUri?.let {
+                    it.second?.apply {
+                        image2ImageViewModel.setCurrrentImagePath(this)
+                    }
+                }
+            }
+        }
+
+        permissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ){
+            it?.apply {
+                takePhotoUri = ImageUtil.getCameraUri(requireContext())
+                takePhotoUri?.let {
+                    it.first?.apply {
+                        openCameraLauncher.launch(this)
                     }
                 }
             }
@@ -173,7 +224,13 @@ class Image2ImageFragment: Fragment() {
 
         addImageLyout.setOnClickListener {
             clearFocus()
-            launcher.launch("image/*")
+            if(ExUtil.isSoftKeyboardVisible(requireActivity())){
+                ExUtil.closeKeyboard(requireActivity())
+            }
+            selectImageBottomDialogSheet.show(
+                parentFragmentManager,
+                SelectImageBottomDialogSheet.TAG
+            )
         }
         clipReversePromptButton.setOnClickListener {
             clearFocus()

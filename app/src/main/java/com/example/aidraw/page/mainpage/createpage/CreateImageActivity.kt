@@ -3,33 +3,45 @@ package com.example.aidraw.page.mainpage.createpage
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.aidraw.R
 import com.example.aidraw.databinding.ActivityCreateImageBinding
 import com.example.aidraw.intent.CreateImageIntent
-import com.example.aidraw.page.mainpage.homepage.Image2ImageFragment
+import com.example.aidraw.intent.OtherIntent
+import com.example.aidraw.page.mainpage.othepage.LoadingDialog
 import com.example.aidraw.pool.SpKey
+import com.example.aidraw.state.OtherState
 import com.example.aidraw.util.ExUtil
-import com.example.aidraw.util.SavePhotoUtil
 import com.example.aidraw.viewmodel.CreateImageViewModel
+import com.example.aidraw.viewmodel.OtherViewModel
 import com.example.aidraw.viewmodel.SDWebUICreateViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CreateImageActivity : AppCompatActivity() {
 
     private val createImageViewModel: CreateImageViewModel by viewModels()
     private val sdWebUICreateViewModel: SDWebUICreateViewModel by viewModels()
+    private val otherViewModel: OtherViewModel by viewModels()
     private lateinit var activityCreateImageBinding: ActivityCreateImageBinding
     private lateinit var downloadButton: Button
     private lateinit var shareButton: ImageButton
+    private lateinit var refreshButton: ImageButton
     private lateinit var returnButton: ImageView
     private lateinit var createImageTitle: TextView
     private lateinit var createImageLayout: ConstraintLayout
+    private lateinit var launcher: ActivityResultLauncher<Array<String>>
+    private val loadingDialog: LoadingDialog by lazy {
+        LoadingDialog()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,51 +56,58 @@ class CreateImageActivity : AppCompatActivity() {
     private fun init(){
         initData()
         initWidget()
+        handleState()
         handleIntent()
     }
 
     private fun initData(){
         downloadButton = activityCreateImageBinding.downloadButton
         shareButton = activityCreateImageBinding.shareButton
+        refreshButton = activityCreateImageBinding.refreshButton
         createImageTitle = activityCreateImageBinding.createImageTitle
         returnButton = activityCreateImageBinding.createImageReturnIcon
         createImageLayout = activityCreateImageBinding.createImageLayout
 
 
-        createImageViewModel.currentCreateResult.observe(
-            this
-        ){
-            shareButton.isEnabled = true
-            downloadButton.isEnabled = true
-        }
+
     }
 
     private fun initWidget(){
 
         downloadButton.isEnabled = false
         shareButton.isEnabled = false
+        refreshButton.isEnabled = false
 
         returnButton.setOnClickListener {
             this.finish()
         }
         downloadButton.setOnClickListener {
             createImageViewModel.getCurrentCreateResult()?.let {
-                SavePhotoUtil.saveToAlbum(
-                    it,
-                    this,
-                    "${System.currentTimeMillis()}"
-                ){
-                    ExUtil.toast(
-                        this,
-                        R.string.save_success
-                    )
-                }
+                otherViewModel.post(OtherIntent.downloadImage(it))
+            }
+            if(createImageViewModel.getCurrentCreateResult() == null){
+                ExUtil.toast(this,R.string.download_tip)
             }
         }
         shareButton.setOnClickListener {
-
+            if(createImageViewModel.getCurrentCreateResult() == null){
+                ExUtil.toast(this , R.string.share_tip)
+            }else{
+                createImageViewModel.getCurrentImageUri()?.let {
+                    ExUtil.sharePhoto(this , it , this.contentResolver)
+                }
+                if(createImageViewModel.getCurrentImageUri() == null){
+                    createImageViewModel.getCurrentCreateResult()?.let {
+                        otherViewModel.post(OtherIntent.shareImage(it))
+                    }
+                }
+            }
+        }
+        refreshButton.setOnClickListener {
+            otherViewModel.post(OtherIntent.refreshImageStart)
         }
     }
+
 
     private fun handleIntent(){
         intent?.apply {
@@ -133,6 +152,65 @@ class CreateImageActivity : AppCompatActivity() {
                         .add(createImageLayout.id , image2ImageCreateFragment)
                         .commit()
                     setTitle(getString(R.string.image_2_image_title))
+                }
+            }
+
+        }
+    }
+
+    private fun handleState(){
+        lifecycleScope.launch {
+            otherViewModel.otherState.collect {
+                it?.apply {
+                    when (this) {
+                        is OtherState.downloadImageSuccess -> {
+                            createImageViewModel.setCurrentImageUri(this.imageUri)
+                            loadingDialog.dismissAllowingStateLoss()
+                            ExUtil.toast(
+                                this@CreateImageActivity,
+                                R.string.save_success
+                            )
+                        }
+
+                        is OtherState.shareImageSuccess -> {
+                            createImageViewModel.setCurrentImageUri(this.imageUri)
+                            loadingDialog.dismissAllowingStateLoss()
+                            ExUtil.sharePhoto(
+                                this@CreateImageActivity,
+                                this.imageUri,
+                                this@CreateImageActivity.contentResolver
+                            )
+                        }
+
+                        is OtherState.downloadError -> {
+                            loadingDialog.dismissAllowingStateLoss()
+                            ExUtil.toast(
+                                this@CreateImageActivity,
+                                R.string.network_error
+                            )
+                        }
+
+                        is OtherState.downloading -> {
+                            loadingDialog.show(
+                                supportFragmentManager,
+                                LoadingDialog.TAG
+                            )
+                        }
+
+                        is OtherState.refreshImageStart -> {
+                            createImageViewModel.setCurentCreateResult(null)
+                            createImageViewModel.setCurrentImageUri(null)
+                            downloadButton.isEnabled = false
+                            shareButton.isEnabled = false
+                            refreshButton.isEnabled = false
+                        }
+                        is OtherState.refreshImageEnd -> {
+                            createImageViewModel.setCurentCreateResult(this.imageUrl)
+                            shareButton.isEnabled = true
+                            downloadButton.isEnabled = true
+                            refreshButton.isEnabled = true
+                        }
+                    }
                 }
             }
 

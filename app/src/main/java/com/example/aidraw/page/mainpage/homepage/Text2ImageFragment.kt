@@ -25,8 +25,6 @@ import com.example.aidraw.viewmodel.Text2ImageViewModel
 
 class Text2ImageFragment:  Fragment() {
 
-    private val sdWebUICreateViewModel: SDWebUICreateViewModel by viewModels()
-    private val text2ImageViewModel: Text2ImageViewModel by activityViewModels()
     private lateinit var fragmentTextToImageBinding: FragmentTextToImageBinding
     private lateinit var text2ImagecreateButton: Button
     private lateinit var text2ImagepositionPromptLayout: ConstraintLayout
@@ -123,8 +121,6 @@ class Text2ImageFragment:  Fragment() {
         ).apply {
             this.cornerRadius =  ExUtil.dip2px(this@Text2ImageFragment.requireContext() , 10f)
         }
-        text2ImagepositionPromptInput.text = Editable.Factory.getInstance().newEditable("(masterpiece,best quality:1.6), (solo,1girl,bust:1.2), scenery,(Mountain, maid), flower,butterfly")
-        text2ImagenegationPromptInput.text = Editable.Factory.getInstance().newEditable("nsfw,(worst quality,low quality,normal quality:1.6),a realistic face, impossible anatomy,impossible arms and legs, impossible hands and feet, impossible fingers and toes, impossible numbers of limbs and fingers, impossible clothes and shoes, watermark ")
 
 
 

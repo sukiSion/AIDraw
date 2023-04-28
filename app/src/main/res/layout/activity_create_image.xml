@@ -29,7 +29,8 @@
                 android:id="@+id/create_image_return_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
+                android:paddingVertical="12dp"
+                android:paddingEnd="12dp"
                 android:src="@drawable/return_icon">
             </ImageView>
 
@@ -105,8 +106,22 @@
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
-        
-        
+
+        <ImageButton
+            android:id="@+id/refresh_button"
+            app:layout_constraintTop_toBottomOf="@id/create_image_layout"
+            app:layout_constraintBottom_toBottomOf="@id/create_image_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/refresh_icon"
+            android:padding="12dp"
+            android:enabled="false"
+            android:background="@drawable/circle_button_shape">
+        </ImageButton>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
     
 

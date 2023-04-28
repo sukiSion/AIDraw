@@ -34,4 +34,26 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="download">Download</string>
     <string name="save_success">Saved successfully</string>
+    <string name="network_error">Network Error</string>
+    <string name="share">Share</string>
+    <string name="download_tip">Can\'t Download Now</string>
+    <string name="share_tip">Can\'t Share Now</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login">Log In</string>
+    <string name="login_1">Login</string>
+    <string name="not_have_account">Don\'t have an account?</string>
+    <string name="camera">Camera</string>
+    <string name="album">Album</string>
+    <string name="username">Your username</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="email">Your Email(optional)</string>
+    <string name="tellphone">Your Tellphone(optional)</string>
+    <string name="username_tip">Username can not be empty</string>
+    <string name="password_tip">Password can not be empty</string>
+    <string name="confirm_password_tip">Password confirmation cannot be empty</string>
+    <string name="password_confirm_password_tip">The password and confirm password need to be the same</string>
+    <string name="sign_up_success">registration success</string>
+    <string name="login_success">Login successful</string>
+    <string name="username_password_error">Username or password is incorrect</string>
 </resources>

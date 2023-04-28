@@ -120,9 +120,11 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="gone"
                     android:id="@+id/repair_layout"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -173,7 +175,6 @@
 
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:gravity="center_vertical"

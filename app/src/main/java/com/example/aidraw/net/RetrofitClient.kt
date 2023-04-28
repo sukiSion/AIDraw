@@ -31,7 +31,7 @@ class RetrofitClient private constructor() {
     }
 
     private fun getOkHttpClient(): OkHttpClient {
-        val DEFAULT_TIMEOUT = 1000L * 60L
+        val DEFAULT_TIMEOUT = 1000L * 120L
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(level = HttpLoggingInterceptor.Level.BODY))
             .addInterceptor(StableDiffusionInterceptor())
