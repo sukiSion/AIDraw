@@ -16,6 +16,7 @@ import com.example.aidraw.page.mainpage.homepage.Text2ImageFragment
 import com.example.aidraw.page.mainpage.settingpage.SettingFragment
 import com.example.aidraw.util.ExUtil
 import com.example.aidraw.viewmodel.Image2ImageViewModel
+import com.example.aidraw.viewmodel.MainViewModel
 import com.example.aidraw.viewmodel.SettingViewModel
 import com.example.aidraw.viewmodel.Text2ImageViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -39,6 +40,7 @@ MainActivity : AppCompatActivity() {
     private val settingViewModel: SettingViewModel by viewModels()
     private val image2ImageViewModel: Image2ImageViewModel by viewModels()
     private val text2ImageViewModel: Text2ImageViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,12 +72,10 @@ MainActivity : AppCompatActivity() {
         pageChangeCallback = object : OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-
                 when(position){
                     0 -> {
                         bottomNavLayout.selectedItemId = R.id.text_2_image_item
                     }
-
                     1 -> {
                         bottomNavLayout.selectedItemId = R.id.image_2_image_item
                     }
@@ -83,6 +83,7 @@ MainActivity : AppCompatActivity() {
                         bottomNavLayout.selectedItemId = R.id.setting_item
                     }
                 }
+
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -116,6 +117,12 @@ MainActivity : AppCompatActivity() {
                 }
                 return true
             }
+        }
+
+        mainViewModel.currentPageIndex.observe(
+            this
+        ){
+            containerLayout.currentItem = it
         }
     }
 

@@ -4,89 +4,189 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text_2_image_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_2_image_title"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/eagle_lake_regular">
-    </TextView>
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/text_2_image_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_2_image_title"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="@font/eagle_lake_regular">
+            </TextView>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_2_image_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/text_2_image_position_prompt_layout"
-        android:padding="2dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_2_image_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/text_2_image_position_prompt_layout"
+                android:padding="2dp">
 
-        <EditText
-            android:id="@+id/text_2_image_position_prompt_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:lines="4"
-            android:maxLines="4"
-            android:hint="@string/position_hint"
-            android:gravity="start|top"
-            android:padding="8dp"
-            android:background="@drawable/shape_input_bg">
-        </EditText>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <EditText
+                    android:id="@+id/text_2_image_position_prompt_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:lines="4"
+                    android:maxLines="4"
+                    android:hint="@string/position_hint"
+                    android:gravity="start|top"
+                    android:padding="8dp"
+                    android:background="@drawable/shape_input_bg">
+                </EditText>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginTop="20dp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_2_image_position_prompt_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/text_2_image_negation_prompt_layout"
-        android:padding="2dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_2_image_position_prompt_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/text_2_image_negation_prompt_layout"
+                android:padding="2dp">
 
-        <EditText
-            android:id="@+id/text_2_image_negation_prompt_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:lines="4"
-            android:maxLines="4"
-            android:hint="@string/negation_hint"
-            android:gravity="start|top"
-            android:padding="8dp"
-            android:background="@drawable/shape_input_bg">
-        </EditText>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <EditText
+                    android:id="@+id/text_2_image_negation_prompt_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:lines="4"
+                    android:maxLines="4"
+                    android:hint="@string/negation_hint"
+                    android:gravity="start|top"
+                    android:padding="8dp"
+                    android:background="@drawable/shape_input_bg">
+                </EditText>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/text_2_image_create_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/create"
-        app:layout_constraintTop_toBottomOf="@id/text_2_image_negation_prompt_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textAllCaps="false"
-        android:background="@drawable/shape_button"
-        android:textColor="@color/white"
-        android:textSize="17sp"
-        android:layout_marginTop="20dp"
-        android:paddingVertical="10dp">
-    </Button>
+            <Button
+                android:id="@+id/text_2_image_create_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/create"
+                app:layout_constraintTop_toBottomOf="@id/text_2_image_negation_prompt_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textAllCaps="false"
+                android:background="@drawable/shape_button"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:layout_marginTop="20dp"
+                android:paddingVertical="10dp">
+            </Button>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/get_image_information_layout"
+                android:layout_width="0dp"
+                android:layout_height="400dp"
+                android:background="@drawable/dash_bg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/text_2_image_create_button">
+                
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:foregroundGravity="center_horizontal"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/upload_image_layout">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/upload_icon">
+                    </ImageView>
+
+                    <TextView
+                        android:textColor="@color/grey_b8bd"
+                        android:layout_marginTop="12dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/upload_image">
+                    </TextView>
+
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/get_image_infoemation_tip"
+                        android:textColor="@color/grey_b8bd">
+                    </TextView>
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/upload_image"
+                    android:layout_width="0dp"
+                    app:shapeAppearanceOverlay="@style/image_shape"
+                    android:layout_height="0dp"
+                    android:scaleType="centerCrop"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+                </com.google.android.material.imageview.ShapeableImageView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <Button
+                android:id="@+id/get_image_information_button"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textAllCaps="false"
+                android:enabled="false"
+                android:text="@string/get_image_information"
+                android:background="@drawable/create_button_bg"
+                app:layout_constraintTop_toBottomOf="@id/get_image_information_layout">
+            </Button>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 
 

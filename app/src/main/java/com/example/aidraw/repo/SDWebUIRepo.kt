@@ -31,6 +31,18 @@ object SDWebUIRepo {
             }))
     }
 
+    fun getImageInformation(
+        imageBase64: String,
+        sessionHash: String
+    ) = flow {
+        emit(appService.sdWebUINetWork(RequestBean(
+            session_hash = sessionHash
+        ).run {
+             setGetImageInformation(imageBase64)
+            this
+        }))
+    }
+
     fun image2image(positionPrompt: String , negationPrompt: String , imageBase64: String ,sessionHash: String): Flow<ResultBean>
             = flow {
         emit(appService.sdWebUINetWork(

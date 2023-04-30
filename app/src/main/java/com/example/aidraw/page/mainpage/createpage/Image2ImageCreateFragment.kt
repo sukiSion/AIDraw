@@ -70,7 +70,7 @@ class Image2ImageCreateFragment(val image2ImageIntent: CreateImageIntent.Image2I
                         positionPrompt = image2ImageIntent.position,
                         negationPrompt = image2ImageIntent.negation,
                         imageBase64 = this ,
-                        seesionHash = ExUtil.getAndroidId(requireContext())
+                        sessionHash = ExUtil.getAndroidId(requireContext())
                     )
                 )
             }
@@ -114,7 +114,7 @@ class Image2ImageCreateFragment(val image2ImageIntent: CreateImageIntent.Image2I
                                     positionPrompt = image2ImageIntent.position,
                                     negationPrompt = image2ImageIntent.negation,
                                     imageBase64 = this ,
-                                    seesionHash = ExUtil.getAndroidId(requireContext())
+                                    sessionHash = ExUtil.getAndroidId(requireContext())
                                 )
                             )
                         }

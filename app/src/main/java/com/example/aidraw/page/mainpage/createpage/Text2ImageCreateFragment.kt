@@ -65,7 +65,7 @@ class Text2ImageCreateFragment(val text2ImageIntent: CreateImageIntent.Text2Imag
             SDWebUICreateIntent.Text2Image(
                 positionPrompt = text2ImageIntent.position,
                 negationPrompt = text2ImageIntent.negation,
-                seesionHash = ExUtil.getAndroidId(requireContext())
+                sessionHash = ExUtil.getAndroidId(requireContext())
             )
         )
 
@@ -102,7 +102,7 @@ class Text2ImageCreateFragment(val text2ImageIntent: CreateImageIntent.Text2Imag
                         SDWebUICreateIntent.Text2Image(
                             positionPrompt = text2ImageIntent.position,
                             negationPrompt =  text2ImageIntent.negation,
-                            seesionHash = ExUtil.getAndroidId(requireContext())
+                            sessionHash = ExUtil.getAndroidId(requireContext())
                         )
                     )
                 }

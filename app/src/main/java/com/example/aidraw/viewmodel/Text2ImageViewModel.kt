@@ -11,6 +11,15 @@ class Text2ImageViewModel: ViewModel() {
     private val _currentNegation: MutableLiveData<String> = MutableLiveData()
     val currentNegation: LiveData<String> = _currentNegation
 
+    private val _uploadImagePath: MutableLiveData<String> = MutableLiveData()
+    val uploadImagePath: LiveData<String> = _uploadImagePath
+
+    fun setUploadImagePath(path: String){
+        _uploadImagePath.postValue(path)
+    }
+
+    fun getUploadImagePath() = _uploadImagePath.value
+
     fun setPosition(position: String){
         _currentPosition.postValue(position)
     }
@@ -22,5 +31,7 @@ class Text2ImageViewModel: ViewModel() {
     }
 
     fun getNegation() = _currentNegation.value
+
+
 
 }

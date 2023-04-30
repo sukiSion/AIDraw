@@ -66,6 +66,13 @@ data class RequestBean(
     val session_hash: String
 ){
 
+    // 设置获取图片信息的data
+    fun setGetImageInformation(imageBase64: String){
+        fn_index  = ConstantPool.fn_index_get_image_information
+        data = listOf(imageBase64).toTypedArray()
+    }
+
+
     // 设置clip反推提示词的data
     fun setClipReversePrompt(imageBase64: String){
         fn_index = ConstantPool.fn_index_clip_reverse_prompt

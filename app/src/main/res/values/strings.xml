@@ -2,6 +2,8 @@
     <string name="app_name">AI Draw</string>
     <string name="create">Create</string>
     <string name="start_now">Start Now!</string>
+    <string name="position_prompt">Position Prompt</string>
+    <string name="negation_prompt">Negation Prompt</string>
     <string name="position_hint">Position Prompt(请输入正面关键词)</string>
     <string name="negation_hint">Negation Prompt(请输入反面关键词)</string>
     <string name="text_2_image_title">Text To Image</string>
@@ -56,4 +58,7 @@
     <string name="sign_up_success">registration success</string>
     <string name="login_success">Login successful</string>
     <string name="username_password_error">Username or password is incorrect</string>
+    <string name="get_image_information">Get Image Information</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="get_image_infoemation_tip">Tip : Put in the picture of Text to Image or Image to Image</string>
 </resources>

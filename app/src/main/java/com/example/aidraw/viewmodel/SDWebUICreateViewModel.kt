@@ -7,6 +7,7 @@ import com.example.aidraw.Bean.ResultBean
 import com.example.aidraw.intent.SDWebUICreateIntent
 import com.example.aidraw.net.ApiUrl
 import com.example.aidraw.net.AppCoroutineExceptionHandler
+import com.example.aidraw.pool.ConstantPool
 import com.example.aidraw.repo.SDWebUIRepo
 import com.example.aidraw.state.SDWebUICreateState
 import com.google.gson.Gson
@@ -16,6 +17,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
@@ -40,19 +42,19 @@ class SDWebUICreateViewModel : ViewModel(){
                         text2image(
                             positionPrompt = it.positionPrompt,
                             negation = it.negationPrompt,
-                            seesionHash = it.seesionHash
+                            sessionHash = it.sessionHash
                         )
                     }
                     is SDWebUICreateIntent.DeepBooruReversePrompt -> {
                         deepBooruReversePrompt(
                             imageBase64 = it.imageBase64,
-                            seesionHash = it.seesionHash
+                            sessionHash = it.sessionHash
                         )
                     }
                     is SDWebUICreateIntent.ClipReversePrompt -> {
                         clipReversePrompt(
                             imageBase64 = it.imageBase64,
-                            seesionHash = it.seesionHash
+                            sessionHash = it.sessionHash
                         )
                     }
                     is SDWebUICreateIntent.Image2Image -> {
@@ -60,7 +62,13 @@ class SDWebUICreateViewModel : ViewModel(){
                             positionPrompt = it.positionPrompt,
                             negationPrompt = it.negationPrompt,
                             imageBase64 = it.imageBase64,
-                            seesionHash = it.seesionHash
+                            sessionHash = it.sessionHash
+                        )
+                    }
+                    is SDWebUICreateIntent.GetImageInformation -> {
+                        getImageformation(
+                            imageBase64 = it.imageBase64,
+                            sessionHash = it.sessionHash
                         )
                     }
                 }
@@ -74,9 +82,40 @@ class SDWebUICreateViewModel : ViewModel(){
         }
     }
 
+    private fun getImageformation(
+        imageBase64: String,
+        sessionHash: String
+    ){
+        viewModelScope.launch (context = this.viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
+                context: CoroutineContext, exception: Throwable ->
+            viewModelScope.launch(Dispatchers.Main + context) {
+                _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(exception))
+            }
+        }){
+            SDWebUIRepo.getImageInformation(imageBase64 = imageBase64 , sessionHash =  sessionHash)
+                .onStart {
+                    withContext(Dispatchers.Main){
+                        _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                    }
+                }
+                .flowOn(Dispatchers.IO)
+                .collect{
+                    it.data.takeIf {
+                        it.isNotEmpty() && it.size == 3
+                    }?.get(1)?.apply {
+                        if(this is String){
+                            withContext(Dispatchers.Main){
+                                _SDWebUICreateState.emit(handleImageInformation(this@apply))
+                            }
+                        }
+                    }
+                }
+        }
+    }
+
     private fun clipReversePrompt(
         imageBase64: String,
-        seesionHash: String
+        sessionHash: String
     ){
         viewModelScope.launch (context = this.viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
                 context: CoroutineContext, exception: Throwable ->
@@ -86,7 +125,7 @@ class SDWebUICreateViewModel : ViewModel(){
         }){
             SDWebUIRepo.clipReversePrompt(
                 imageBase64 = imageBase64,
-                sessionHash = seesionHash
+                sessionHash = sessionHash
             )
                 .flowOn(Dispatchers.IO)
                 .onStart {
@@ -110,7 +149,7 @@ class SDWebUICreateViewModel : ViewModel(){
 
     private fun deepBooruReversePrompt(
         imageBase64: String,
-        seesionHash: String
+        sessionHash: String
     ){
         viewModelScope.launch (context = this.viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
                 context: CoroutineContext, exception: Throwable ->
@@ -120,7 +159,7 @@ class SDWebUICreateViewModel : ViewModel(){
         }){
             SDWebUIRepo.deepBooruReversePrompt(
                 imageBase64 = imageBase64,
-                sessionHash = seesionHash
+                sessionHash = sessionHash
             ).flowOn(Dispatchers.IO)
                 .onStart {
                 withContext(Dispatchers.Main) {
@@ -141,7 +180,7 @@ class SDWebUICreateViewModel : ViewModel(){
         }
     }
 
-    private fun text2image(positionPrompt: String , negation: String , seesionHash: String){
+    private fun text2image(positionPrompt: String , negation: String , sessionHash: String){
         viewModelScope.launch (context = this.viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
                 context: CoroutineContext, exception: Throwable ->
             viewModelScope.launch(Dispatchers.Main + context) {
@@ -151,7 +190,7 @@ class SDWebUICreateViewModel : ViewModel(){
             SDWebUIRepo.text2image(
                 positionPrompt = positionPrompt,
                 negationPrompt = negation,
-                sessionHash = seesionHash
+                sessionHash = sessionHash
             )
                 .flowOn(Dispatchers.IO)
                 .onStart {
@@ -173,7 +212,7 @@ class SDWebUICreateViewModel : ViewModel(){
 
     }
 
-    private fun image2image(positionPrompt: String , negationPrompt: String , imageBase64: String , seesionHash: String){
+    private fun image2image(positionPrompt: String , negationPrompt: String , imageBase64: String , sessionHash: String){
         viewModelScope.launch (context = this.viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
                 context: CoroutineContext, exception: Throwable ->
             viewModelScope.launch(Dispatchers.Main + context) {
@@ -184,7 +223,7 @@ class SDWebUICreateViewModel : ViewModel(){
                 positionPrompt = positionPrompt,
                 negationPrompt = negationPrompt,
                 imageBase64 = imageBase64,
-                sessionHash = seesionHash
+                sessionHash = sessionHash
             )
                 .flowOn(Dispatchers.IO)
                 .onStart {
@@ -208,7 +247,7 @@ class SDWebUICreateViewModel : ViewModel(){
 
 
     // 文生图,图生图结果解析
-    private inline fun handleResultBean(resultBean: ResultBean): OutPutBean?{
+    private fun handleResultBean(resultBean: ResultBean): OutPutBean?{
         resultBean.data.forEach {
             if(it is List<*>){
                 it.forEach {
@@ -222,6 +261,24 @@ class SDWebUICreateViewModel : ViewModel(){
             }
         }
         return null
+    }
+
+    // 图片信息结果字符串解析
+    private fun handleImageInformation(imageInformation:String): SDWebUICreateState.ImageInformation{
+        val positionPromptLength = imageInformation.indexOf(ConstantPool.negation_prompt_heading)
+        var positionPrompt = imageInformation.substring(0 , positionPromptLength )
+        if(positionPrompt.endsWith("\n")) {
+            positionPrompt = imageInformation.substring(0, positionPromptLength - 1)
+        }
+        val negationPromptLength = imageInformation.indexOf(ConstantPool.steps_heading)
+        var negationPrompt = imageInformation.substring(positionPromptLength + ConstantPool.negation_prompt_heading.length, negationPromptLength)
+        if(negationPrompt.endsWith("\n")) {
+            negationPrompt = imageInformation.substring(positionPromptLength + ConstantPool.negation_prompt_heading.length, negationPromptLength - 1)
+        }
+        return SDWebUICreateState.ImageInformation(
+            positionPrompt = positionPrompt,
+            negationPrompt = negationPrompt
+        )
     }
 
 }

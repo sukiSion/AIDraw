@@ -247,7 +247,7 @@ class Image2ImageFragment: Fragment() {
                         imageBase64?.let {
                             sdWebUICreateViewModel.post(
                                 SDWebUICreateIntent.ClipReversePrompt(
-                                    seesionHash = ExUtil.getAndroidId(requireContext()),
+                                    sessionHash = ExUtil.getAndroidId(requireContext()),
                                     imageBase64 = "${ConstantPool.image_base64_scheme}${it}"
                                 )
                             )
@@ -271,7 +271,7 @@ class Image2ImageFragment: Fragment() {
                         imageBase64?.let {
                             sdWebUICreateViewModel.post(
                                 SDWebUICreateIntent.DeepBooruReversePrompt(
-                                    seesionHash = ExUtil.getAndroidId(requireContext()),
+                                    sessionHash = ExUtil.getAndroidId(requireContext()),
                                     imageBase64 = "${ConstantPool.image_base64_scheme}${it}"
                                 )
                             )
@@ -315,6 +315,16 @@ class Image2ImageFragment: Fragment() {
                     )
                 }
             }
+        }
+        image2ImageViewModel.currentPosition.observe(
+            viewLifecycleOwner
+        ){
+            image2ImagePositionPromptInput.text = Editable.Factory.getInstance().newEditable(it)
+        }
+        image2ImageViewModel.currentNegation.observe(
+            viewLifecycleOwner
+        ){
+            image2ImageNegationPromptInput.text = Editable.Factory.getInstance().newEditable(it)
         }
     }
 

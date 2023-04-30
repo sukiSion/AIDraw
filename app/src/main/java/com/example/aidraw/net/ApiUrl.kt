@@ -1,7 +1,8 @@
 package com.example.aidraw.net
 
 object ApiUrl {
-    const val baseUrl = "https://581f-120-231-141-244.ngrok-free.app/"
+    // 每一次内网穿透后都需要改变这里地址
+    const val baseUrl = "https://ddbc-120-239-157-11.ngrok-free.app/"
     const val resultUrl = "${baseUrl}file="
     const val sdUrl = "run/predict"
 

@@ -17,6 +17,8 @@ object ConstantPool {
     const val fn_index_deepbooru_reverse_prompt = 149
     // 图生图的fn_index
     const val fn_index_image2image = 146
+    // 获取图片信息的fn_index
+    const val fn_index_get_image_information = 165
     // 高度和宽度的最小值
     const val min_width_height = 64
     // 高度和宽带的最大值
@@ -31,6 +33,10 @@ object ConstantPool {
     const val max_scale = 4f
     // 最大重绘幅度
     const val max_denoising = 100
+    // 获取图片信息时负面词汇的题头
+    const val negation_prompt_heading = "Negative prompt: "
+    // 获取图片信息时步数的题头
+    const val steps_heading = "Steps: "
 
     // 上传图片的Scheme头：
     const val image_base64_scheme = "data:image/png;base64,"
