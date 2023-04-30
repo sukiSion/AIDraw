@@ -17,7 +17,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
@@ -102,8 +101,8 @@ class SDWebUICreateViewModel : ViewModel(){
                 .collect{
                     it.data.takeIf {
                         it.isNotEmpty() && it.size == 3
-                    }?.get(1)?.apply {
-                        if(this is String){
+                    }?.get(1).apply {
+                        if(this is String?){
                             withContext(Dispatchers.Main){
                                 _SDWebUICreateState.emit(handleImageInformation(this@apply))
                             }
@@ -264,21 +263,78 @@ class SDWebUICreateViewModel : ViewModel(){
     }
 
     // 图片信息结果字符串解析
-    private fun handleImageInformation(imageInformation:String): SDWebUICreateState.ImageInformation{
-        val positionPromptLength = imageInformation.indexOf(ConstantPool.negation_prompt_heading)
-        var positionPrompt = imageInformation.substring(0 , positionPromptLength )
-        if(positionPrompt.endsWith("\n")) {
-            positionPrompt = imageInformation.substring(0, positionPromptLength - 1)
+    private fun handleImageInformation(imageInformation:String?): SDWebUICreateState{
+        if(imageInformation == null){
+            return SDWebUICreateState.GetImageInformationFail
+        }else{
+            val positionPromptLastIndex = imageInformation.indexOf(ConstantPool.negation_prompt_heading)
+            var positionPrompt = imageInformation.substring(0 , positionPromptLastIndex )
+            if(positionPrompt.endsWith("\n")) {
+                positionPrompt = imageInformation.substring(0, positionPromptLastIndex - 1)
+            }
+            val negationPromptLastIndex = imageInformation.indexOf(ConstantPool.steps_heading)
+            var negationPrompt = imageInformation.substring(positionPromptLastIndex + ConstantPool.negation_prompt_heading.length, negationPromptLastIndex)
+            if(negationPrompt.endsWith("\n")) {
+                negationPrompt = imageInformation.substring(positionPromptLastIndex + ConstantPool.negation_prompt_heading.length, negationPromptLastIndex - 1)
+            }
+            val stepsLastIndex = imageInformation.indexOf(ConstantPool.sampler_heading)
+            val steps = imageInformation.substring(negationPromptLastIndex + ConstantPool.steps_heading.length , stepsLastIndex).toInt()
+
+            val samplerLastIndex = imageInformation.indexOf(ConstantPool.cfg_heading)
+            val sampler = imageInformation.substring(stepsLastIndex + ConstantPool.sampler_heading.length , samplerLastIndex)
+
+            val cfgScaleLastIndex = imageInformation.indexOf(ConstantPool.seed_heading)
+            val cfgScale = imageInformation.substring(samplerLastIndex + ConstantPool.cfg_heading.length , cfgScaleLastIndex).toInt()
+
+            val seedLastIndex = imageInformation.indexOf(ConstantPool.size_heading)
+            val seed = imageInformation.substring(cfgScaleLastIndex + ConstantPool.seed_heading.length , seedLastIndex).toLong()
+
+            val sizeLastIndex = imageInformation.indexOf(ConstantPool.model_hash_heading)
+            val size = imageInformation.substring(seedLastIndex + ConstantPool.size_heading.length , sizeLastIndex)
+            val widthAngHeight = size.split("x")
+            val width = widthAngHeight[0].toInt()
+            val height = widthAngHeight[1].toInt()
+
+            val modelHashLastIndex = imageInformation.indexOf(ConstantPool.model_heading)
+            val modelHsah = imageInformation.substring(sizeLastIndex + ConstantPool.model_hash_heading.length , modelHashLastIndex)
+
+
+            val modelLastIndex = if(imageInformation.contains(ConstantPool.denoising_heading)){
+                imageInformation.indexOf(ConstantPool.denoising_heading)
+            }else{
+                imageInformation.indexOf(ConstantPool.clip_skip_heading)
+            }
+            val model = imageInformation.substring(modelHashLastIndex + ConstantPool.model_heading.length , modelLastIndex)
+
+            val clipSkipLastIndex = imageInformation.indexOf(ConstantPool.ensd_heading)
+            val clipSkip = imageInformation.substring(imageInformation.indexOf(ConstantPool.clip_skip_heading) + ConstantPool.clip_skip_heading.length , clipSkipLastIndex).toInt()
+
+            val ensd = if(imageInformation.contains(ConstantPool.mask_blur_heading)){
+                val ensdLastIndex = imageInformation.indexOf(ConstantPool.mask_blur_heading)
+                imageInformation.substring(clipSkipLastIndex + ConstantPool.ensd_heading.length , ensdLastIndex).toInt()
+
+            }else{
+                imageInformation.substring(clipSkipLastIndex + ConstantPool.ensd_heading.length , imageInformation.length).toInt()
+            }
+
+
+
+
+            return SDWebUICreateState.GetImageInformationSuccess(
+                positionPrompt = positionPrompt,
+                negationPrompt = negationPrompt,
+                steps = steps,
+                sampler = sampler,
+                cfgScale = cfgScale,
+                seed = seed,
+                width = width,
+                height = height,
+                modelHash = modelHsah,
+                model = model,
+                clipSkip = clipSkip,
+                ensd = ensd
+            )
         }
-        val negationPromptLength = imageInformation.indexOf(ConstantPool.steps_heading)
-        var negationPrompt = imageInformation.substring(positionPromptLength + ConstantPool.negation_prompt_heading.length, negationPromptLength)
-        if(negationPrompt.endsWith("\n")) {
-            negationPrompt = imageInformation.substring(positionPromptLength + ConstantPool.negation_prompt_heading.length, negationPromptLength - 1)
-        }
-        return SDWebUICreateState.ImageInformation(
-            positionPrompt = positionPrompt,
-            negationPrompt = negationPrompt
-        )
     }
 
 }

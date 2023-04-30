@@ -32,7 +32,6 @@ import com.example.aidraw.util.ExUtil
 import com.example.aidraw.util.ImageUtil
 import com.example.aidraw.viewmodel.SDWebUICreateViewModel
 import com.example.aidraw.viewmodel.Text2ImageViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -221,13 +220,23 @@ class Text2ImageFragment:  Fragment() {
                             LoadingDialog.TAG
                         )
                     }
-                    else if(this is SDWebUICreateState.ImageInformation){
+                    else if(this is SDWebUICreateState.GetImageInformationSuccess){
 
                         text2ImageViewModel.getUploadImagePath()?.let {
                             val getImageInformationDialog =  GetImageInformationDialog(
                                 positionPrompt = this.positionPrompt,
                                 negationPrimpt = this.negationPrompt,
-                                imagePath = it
+                                imagePath = it,
+                                steps =  this.steps,
+                                sampler = this.sampler,
+                                cfgScale = this.cfgScale,
+                                seed = this.seed,
+                                width = this.width,
+                                height = this.height,
+                                modelHash = this.modelHash,
+                                model = this.model,
+                                clipSkip = this.clipSkip,
+                                ensd = this.ensd
                             )
                             getImageInformationDialog.show(
                                 parentFragmentManager,
@@ -235,6 +244,11 @@ class Text2ImageFragment:  Fragment() {
                             )
                         }
 
+                        if(loadingDialog.isVisible){
+                            loadingDialog.dismissAllowingStateLoss()
+                        }
+                    }
+                    else if(this is SDWebUICreateState.GetImageInformationFail){
                         if(loadingDialog.isVisible){
                             loadingDialog.dismissAllowingStateLoss()
                         }

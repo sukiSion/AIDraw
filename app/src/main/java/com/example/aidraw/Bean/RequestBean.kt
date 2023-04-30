@@ -191,7 +191,7 @@ data class RequestBean(
             1,
             7,
             1.5,
-            0.75,
+            CachePool.instance.denoisiong,
             -1,
             -1,
             0,

@@ -13,7 +13,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -306,10 +305,10 @@ class SettingFragment: Fragment() {
         }
         currentSampler.text = Editable.Factory.getInstance().newEditable(CachePool.instance.sampler)
         currentSampler.setOnClickListener {
-            val  samplarDialog = SamplarDialog()
-            samplarDialog.show(
+            val  samplerDialog = SamplerDialog()
+            samplerDialog.show(
                 parentFragmentManager,
-                SamplarDialog.TAG
+                SamplerDialog.TAG
             )
         }
 
@@ -362,7 +361,7 @@ class SettingFragment: Fragment() {
                 CachePool.instance.denoisiong = it
             }
         }
-        settingViewModel.getSamplar()?.let {
+        settingViewModel.getSampler()?.let {
             if(!it.equals(CachePool.instance.sampler)){
                 CachePool.instance.sampler = it
             }

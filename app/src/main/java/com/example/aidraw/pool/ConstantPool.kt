@@ -2,7 +2,7 @@ package com.example.aidraw.pool
 
 import android.Manifest
 import android.os.Environment
-import com.example.aidraw.Bean.SamplarBean
+import com.example.aidraw.Bean.SamplerBean
 
 object ConstantPool {
 
@@ -37,6 +37,26 @@ object ConstantPool {
     const val negation_prompt_heading = "Negative prompt: "
     // 获取图片信息时步数的题头
     const val steps_heading = "Steps: "
+    //获取图片信息时采样器的题头
+    const val sampler_heading = ", Sampler: "
+    //获取图片信息时图片相关程度的题头
+    const val cfg_heading = ", CFG scale: "
+    //获取图片信息时随机种子数的题头
+    const val seed_heading = ", Seed: "
+    //获取图片信息时图片大小的题头
+    const val size_heading = ", Size: "
+    //获取图片信息时模型哈希值的题头
+    const val model_hash_heading = ", Model hash: "
+    //获取图片信息时模型名称的题头
+    const val model_heading = ", Model: "
+    // 获取图片信息时跳过clip层数的题头
+    const val clip_skip_heading = ", Clip skip: "
+    // 获取图片信息时噪声种子增量的题头
+    const val ensd_heading = ", ENSD: "
+    // 获取图片信息时蒙版模糊的题头
+    const val mask_blur_heading = ", Mask blur: "
+    // 获取图片信息是重绘幅度的题头
+    const val denoising_heading = ", Denoising strength: "
 
     // 上传图片的Scheme头：
     const val image_base64_scheme = "data:image/png;base64,"
@@ -53,25 +73,25 @@ object ConstantPool {
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
 
-    val samplers = listOf<SamplarBean>(
-        SamplarBean("Euler a" , true),
-        SamplarBean("Euler" , false),
-        SamplarBean("LMS" , false),
-        SamplarBean("Heun" , false),
-        SamplarBean("DPM2" , false),
-        SamplarBean("DPM2 a" , false),
-        SamplarBean("DPM++ 2S a" , false),
-        SamplarBean("DPM++ 2M" , false),
-        SamplarBean("DPM++ SDE" , false),
-        SamplarBean("DPM fast" , false),
-        SamplarBean("DPM adaptive" , false),
-        SamplarBean("LMS Karras" , false),
-        SamplarBean("DPM2 Karras" , false),
-        SamplarBean("DPM2 a Karras" , false),
-        SamplarBean("DPM++ 2S a Karras" , false),
-        SamplarBean("DPM++ 2M Karras" , false),
-        SamplarBean("DPM++ SDE Karras" , false),
-        SamplarBean("DDIM" , false),
-        SamplarBean("PLMS" , false),
+    val samplers = listOf<SamplerBean>(
+        SamplerBean("Euler a" , true),
+        SamplerBean("Euler" , false),
+        SamplerBean("LMS" , false),
+        SamplerBean("Heun" , false),
+        SamplerBean("DPM2" , false),
+        SamplerBean("DPM2 a" , false),
+        SamplerBean("DPM++ 2S a" , false),
+        SamplerBean("DPM++ 2M" , false),
+        SamplerBean("DPM++ SDE" , false),
+        SamplerBean("DPM fast" , false),
+        SamplerBean("DPM adaptive" , false),
+        SamplerBean("LMS Karras" , false),
+        SamplerBean("DPM2 Karras" , false),
+        SamplerBean("DPM2 a Karras" , false),
+        SamplerBean("DPM++ 2S a Karras" , false),
+        SamplerBean("DPM++ 2M Karras" , false),
+        SamplerBean("DPM++ SDE Karras" , false),
+        SamplerBean("DDIM" , false),
+        SamplerBean("PLMS" , false),
     )
 }

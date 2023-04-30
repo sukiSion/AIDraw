@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/samplar_name"
+            android:id="@+id/sampler_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="17sp"
@@ -23,11 +23,11 @@
         </TextView>
 
         <ImageView
-            android:id="@+id/samplar_selected_icon"
+            android:id="@+id/sampler_selected_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/samplar_icon"
+            android:src="@drawable/sampler_icon"
             android:layout_marginStart="40dp"
             android:layout_alignParentEnd="true"
             android:visibility="gone"

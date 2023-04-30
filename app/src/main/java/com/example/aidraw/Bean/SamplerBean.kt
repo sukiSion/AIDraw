@@ -1,6 +1,6 @@
 package com.example.aidraw.Bean
 
-data class SamplarBean(
+data class SamplerBean(
     val name: String,
     var selected : Boolean
 ) {

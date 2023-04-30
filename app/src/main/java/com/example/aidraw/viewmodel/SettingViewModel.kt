@@ -3,8 +3,6 @@ package com.example.aidraw.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.aidraw.pool.CachePool
-import com.example.aidraw.pool.ConstantPool
 
 // 用于存放AI绘画配置数据
 class SettingViewModel: ViewModel() {
@@ -78,7 +76,7 @@ class SettingViewModel: ViewModel() {
         _currentDenoising.postValue(value)
     }
 
-    fun getSamplar() = _currentSampler.value
+    fun getSampler() = _currentSampler.value
     fun getScale() = _currentScale.value
     fun getWidth() = _currentWidth.value
     fun getHeight() = _currentHeight.value

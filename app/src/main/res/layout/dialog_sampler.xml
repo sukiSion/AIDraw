@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
-            android:id="@+id/samplar_dialog_close_icon"
+            android:id="@+id/sampler_dialog_close_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/close_icon"
@@ -30,35 +30,35 @@
 
 
             <TextView
-                android:id="@+id/samplar_dialog_title"
+                android:id="@+id/sampler_dialog_title"
                 android:layout_marginTop="5dp"
                 android:textSize="30sp"
-                android:text="@string/select_samplar"
+                android:text="@string/select_sampler"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/samplar_dialog_close_icon"
+                app:layout_constraintTop_toBottomOf="@id/sampler_dialog_close_icon"
                 android:fontFamily="@font/eagle_lake_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
             </TextView>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/samplar_list"
+                android:id="@+id/sampler_list"
                 android:layout_marginHorizontal="30dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constrainedHeight="true"
-                app:layout_constraintTop_toBottomOf="@id/samplar_dialog_title"
+                app:layout_constraintTop_toBottomOf="@id/sampler_dialog_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/samplar_button_layout"
+                app:layout_constraintBottom_toTopOf="@id/sampler_button_layout"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp">
             </androidx.recyclerview.widget.RecyclerView>
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/samplar_button_layout"
+                android:id="@+id/sampler_button_layout"
                 android:layout_width="0dp"
                 android:layout_marginHorizontal="30dp"
                 android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
 
                 <Button
                     android:stateListAnimator="@null"
-                    android:id="@+id/samplar_confirm_button"
+                    android:id="@+id/sampler_confirm_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAllCaps="false"
@@ -83,7 +83,7 @@
 
                 <Button
                     android:stateListAnimator="@null"
-                    android:id="@+id/samplar_cancel_button"
+                    android:id="@+id/sampler_cancel_button"
                     android:layout_width="0dp"
                     android:layout_marginStart="20dp"
                     android:layout_height="wrap_content"

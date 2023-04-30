@@ -8,68 +8,68 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.aidraw.Bean.SamplarBean
+import com.example.aidraw.Bean.SamplerBean
 import com.example.aidraw.R
-import com.example.aidraw.databinding.DialogSamplarBinding
+import com.example.aidraw.databinding.DialogSamplerBinding
 import com.example.aidraw.pool.ConstantPool
 import com.example.aidraw.viewmodel.SettingViewModel
 
-class SamplarDialog: DialogFragment() {
+class SamplerDialog: DialogFragment() {
 
     companion object{
-        val TAG = SamplarDialog::class.java.name
+        val TAG = SamplerDialog::class.java.name
     }
 
-    private lateinit var samplars: List<SamplarBean>
+    private lateinit var samplers: List<SamplerBean>
     private val settingViewModel: SettingViewModel by activityViewModels()
     private var currentIndex = 0
-    private lateinit var dialogSamplarBinding: DialogSamplarBinding
-    private lateinit var samplarAdapter: SamplarAdapter
+    private lateinit var dialogSamplerBinding: DialogSamplerBinding
+    private lateinit var samplerAdapter: SamplerAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        samplars = mutableListOf<SamplarBean>().apply {
+        samplers = mutableListOf<SamplerBean>().apply {
             this.addAll(ConstantPool.samplers)
         }
 
-        samplars.forEachIndexed {
-            index, samplarBean ->
-            if(samplarBean.selected){
+        samplers.forEachIndexed {
+            index, samplerBean ->
+            if(samplerBean.selected){
                 currentIndex = index
                 return@forEachIndexed
             }
         }
 
 
-        samplarAdapter = SamplarAdapter(
-            samplars,
+        samplerAdapter = SamplerAdapter(
+            samplers,
             this.requireContext(),
         ){
             itemView, index ->
             if(currentIndex != index){
-                samplars.forEach {
-                        samplarBean ->
-                    samplarBean.selected = false
+                samplers.forEach {
+                        samplerBean ->
+                    samplerBean.selected = false
                 }
-                samplars[index].selected = true
+                samplers[index].selected = true
                 currentIndex = index
-                samplarAdapter.notifyDataSetChanged()
+                samplerAdapter.notifyDataSetChanged()
             }
         }
-        dialogSamplarBinding.samplarList.adapter = samplarAdapter
-        dialogSamplarBinding.samplarList.layoutManager =  LinearLayoutManager(
+        dialogSamplerBinding.samplerList.adapter = samplerAdapter
+        dialogSamplerBinding.samplerList.layoutManager =  LinearLayoutManager(
             this.requireContext(),
             RecyclerView.VERTICAL,
             false
         )
-        dialogSamplarBinding.samplarCancelButton.setOnClickListener {
+        dialogSamplerBinding.samplerCancelButton.setOnClickListener {
             this.dismissAllowingStateLoss()
         }
-        dialogSamplarBinding.samplarDialogCloseIcon.setOnClickListener {
+        dialogSamplerBinding.samplerDialogCloseIcon.setOnClickListener {
             this.dismissAllowingStateLoss()
         }
-        dialogSamplarBinding.samplarConfirmButton.setOnClickListener {
-            settingViewModel.changeSampler(samplars[currentIndex].name)
+        dialogSamplerBinding.samplerConfirmButton.setOnClickListener {
+            settingViewModel.changeSampler(samplers[currentIndex].name)
             this.dismissAllowingStateLoss()
         }
     }
@@ -79,7 +79,7 @@ class SamplarDialog: DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dialogSamplarBinding = DialogSamplarBinding.inflate(
+        dialogSamplerBinding = DialogSamplerBinding.inflate(
             inflater,
             container,
             false
@@ -92,6 +92,6 @@ class SamplarDialog: DialogFragment() {
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
         }
-        return dialogSamplarBinding.root
+        return dialogSamplerBinding.root
     }
 }

@@ -110,6 +110,298 @@
                         android:textColor="@color/black">
                     </TextView>
 
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/steps_heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/steps_heading"
+                            android:textSize="17sp"
+                            android:textStyle="bold|italic"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                        <TextView
+                            android:background="@drawable/shape_input_bg"
+                            android:padding="8dp"
+                            android:layout_marginStart="20dp"
+                            android:id="@+id/steps_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/sampler_heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sampler_heading"
+                            android:textSize="17sp"
+                            android:textStyle="bold|italic"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                        <TextView
+                            android:background="@drawable/shape_input_bg"
+                            android:padding="8dp"
+                            android:layout_marginStart="20dp"
+                            android:id="@+id/sampler_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/cfg_scale_heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/cfg_scale_heading"
+                            android:textSize="17sp"
+                            android:textStyle="bold|italic"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                        <TextView
+                            android:background="@drawable/shape_input_bg"
+                            android:padding="8dp"
+                            android:layout_marginStart="20dp"
+                            android:id="@+id/cfg_scale_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/seed_heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/seed_heading"
+                            android:textSize="17sp"
+                            android:textStyle="bold|italic"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                        <TextView
+                            android:background="@drawable/shape_input_bg"
+                            android:padding="8dp"
+                            android:layout_marginStart="20dp"
+                            android:id="@+id/seed_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/width_heading"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/width_heading"
+                                android:textSize="17sp"
+                                android:textStyle="bold|italic"
+                                android:textColor="@color/black">
+                            </TextView>
+
+                            <TextView
+                                android:background="@drawable/shape_input_bg"
+                                android:padding="8dp"
+                                android:layout_marginStart="20dp"
+                                android:id="@+id/width_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black">
+                            </TextView>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/height_heading"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/height_heading"
+                                android:textSize="17sp"
+                                android:textStyle="bold|italic"
+                                android:textColor="@color/black">
+                            </TextView>
+
+                            <TextView
+                                android:background="@drawable/shape_input_bg"
+                                android:padding="8dp"
+                                android:layout_marginStart="20dp"
+                                android:id="@+id/height_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black">
+                            </TextView>
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/model_hash_heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/model_hash_heading"
+                            android:textSize="17sp"
+                            android:textStyle="bold|italic"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                        <TextView
+                            android:background="@drawable/shape_input_bg"
+                            android:padding="8dp"
+                            android:layout_marginStart="20dp"
+                            android:id="@+id/model_hash_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/model_heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/model_heading"
+                            android:textSize="17sp"
+                            android:textStyle="bold|italic"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                        <TextView
+                            android:background="@drawable/shape_input_bg"
+                            android:padding="8dp"
+                            android:layout_marginStart="20dp"
+                            android:id="@+id/model_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/clip_skip_heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/clip_skip_heading"
+                            android:textSize="17sp"
+                            android:textStyle="bold|italic"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                        <TextView
+                            android:background="@drawable/shape_input_bg"
+                            android:padding="8dp"
+                            android:layout_marginStart="20dp"
+                            android:id="@+id/clip_skip_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/ensd_heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ensd_heading"
+                            android:textSize="17sp"
+                            android:textStyle="bold|italic"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                        <TextView
+                            android:background="@drawable/shape_input_bg"
+                            android:padding="8dp"
+                            android:layout_marginStart="20dp"
+                            android:id="@+id/ensd_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black">
+                        </TextView>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
                     <Button
                         android:layout_marginTop="20dp"
                         android:layout_width="match_parent"
