@@ -74,4 +74,38 @@ object SDWebUIRepo {
             }))
     }
 
+    fun changeModel(model:String , sessionHash: String): Flow<ResultBean>
+    = flow {
+        emit(appService.sdWebUINetWork(
+            RequestBean(session_hash = sessionHash).run {
+                setChangeModelData(model)
+                this
+            }
+        ))
+    }
+
+    fun getSupportModels(sessionHash: String): Flow<ResultBean>
+            = flow {
+        emit(appService.sdWebUINetWork(
+            RequestBean(
+                data = listOf<Any?>().toTypedArray(),
+                fn_index = ConstantPool.fn_index_support_models,
+                session_hash = sessionHash,
+            )
+        ))
+    }
+
+    fun initApp(sessionHash: String):Flow<ResultBean>
+    = flow {
+        emit(appService.sdWebUINetWork(
+            RequestBean(
+                data = listOf<Any?>().toTypedArray(),
+                fn_index = ConstantPool.fn_index_init_sd_web_ui,
+                session_hash = sessionHash,
+            )
+        ))
+    }
+
+
+
 }

@@ -60,11 +60,11 @@ class OtherViewModel: ViewModel() {
         viewModelScope.launch(context = viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
                 context, exception ->
             viewModelScope.launch(context + Dispatchers.Main) {
-                _otherState.emit(OtherState.downloadError(exception))
+                _otherState.emit(OtherState.DownloadError(exception))
             }
         }){
             flow {
-              emit(OtherState.refreshImageStart)
+              emit(OtherState.RefreshImageStart)
             }
                 .flowOn(Dispatchers.IO)
                 .collect{
@@ -77,7 +77,7 @@ class OtherViewModel: ViewModel() {
         viewModelScope.launch(context = viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
                 context, exception ->
             viewModelScope.launch(context + Dispatchers.Main) {
-                _otherState.emit(OtherState.downloadError(exception))
+                _otherState.emit(OtherState.DownloadError(exception))
             }
         }){
             flow {
@@ -85,7 +85,7 @@ class OtherViewModel: ViewModel() {
             }
                 .flowOn(Dispatchers.IO)
                 .collect{
-                    _otherState.emit(OtherState.refreshImageEnd(imageUrl))
+                    _otherState.emit(OtherState.RefreshImageEnd(imageUrl))
                 }
         }
     }
@@ -94,13 +94,13 @@ class OtherViewModel: ViewModel() {
         viewModelScope.launch(context = viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
             context, exception ->
             viewModelScope.launch(context + Dispatchers.Main) {
-                _otherState.emit(OtherState.downloadError(exception))
+                _otherState.emit(OtherState.DownloadError(exception))
             }
         }){
             OtherRepo.downlaodImage(imageUrl)
                 .flowOn(Dispatchers.IO)
                 .onStart {
-                    _otherState.emit(OtherState.downloading)
+                    _otherState.emit(OtherState.Downloading)
                 }
                 .collect{
                     withContext(Dispatchers.IO){
@@ -110,7 +110,7 @@ class OtherViewModel: ViewModel() {
                                 fileName = "${System.currentTimeMillis()}${ConstantPool.image_suffix}"
                             ) {
                                 viewModelScope.launch(Dispatchers.Main) {
-                                    _otherState.emit(OtherState.downloadImageSuccess(it))
+                                    _otherState.emit(OtherState.DownloadImageSuccess(it))
                                 }
                             }
                         }
@@ -123,13 +123,13 @@ class OtherViewModel: ViewModel() {
         viewModelScope.launch(context = viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
                 context, exception ->
             viewModelScope.launch(context + Dispatchers.Main) {
-                _otherState.emit(OtherState.downloadError(exception))
+                _otherState.emit(OtherState.DownloadError(exception))
             }
         }){
             OtherRepo.downlaodImage(imageUrl)
                 .flowOn(Dispatchers.IO)
                 .onStart {
-                    _otherState.emit(OtherState.downloading)
+                    _otherState.emit(OtherState.Downloading)
                 }
                 .collect{
                     withContext(Dispatchers.IO){
@@ -139,7 +139,7 @@ class OtherViewModel: ViewModel() {
                                 fileName = "${System.currentTimeMillis()}${ConstantPool.image_suffix}"
                             ) {
                                 viewModelScope.launch(Dispatchers.Main) {
-                                    _otherState.emit(OtherState.shareImageSuccess(it))
+                                    _otherState.emit(OtherState.ShareImageSuccess(it))
                                 }
                             }
                         }

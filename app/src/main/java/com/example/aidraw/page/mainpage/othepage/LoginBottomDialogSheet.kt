@@ -14,15 +14,19 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.aidraw.R
 import com.example.aidraw.databinding.FragmentLogInBinding
+import com.example.aidraw.intent.SDWebUICreateIntent
 import com.example.aidraw.intent.UserIntent
 import com.example.aidraw.page.mainpage.MainActivity
 import com.example.aidraw.pool.ConstantPool
+import com.example.aidraw.state.SDWebUICreateState
 import com.example.aidraw.state.UserState
 import com.example.aidraw.util.ExUtil
+import com.example.aidraw.viewmodel.SDWebUICreateViewModel
 import com.example.aidraw.viewmodel.UserViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
@@ -41,7 +45,7 @@ class LoginBottomDialogSheet: BottomSheetDialogFragment() {
     private lateinit var loginSignUpText: TextView
     private lateinit var loginButton: Button
     private lateinit var editTextFocusBg: GradientDrawable
-    private val userViewModel: UserViewModel by viewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
     private val loadingDialog: LoadingDialog by lazy {
         LoadingDialog()
     }
@@ -185,6 +189,7 @@ class LoginBottomDialogSheet: BottomSheetDialogFragment() {
     }
 
     private fun handleState(){
+
         lifecycleScope.launch {
             userViewModel.userState.collect{
                 if(it is UserState.queryingOrAdding){
@@ -198,13 +203,6 @@ class LoginBottomDialogSheet: BottomSheetDialogFragment() {
                         requireContext(),
                         R.string.login_success
                     )
-                    val intent = Intent(requireContext() , MainActivity::class.java)
-                    startActivity(intent)
-                    activity?.takeIf {
-                        !it.isFinishing &&  !it.isDestroyed
-                    }?.apply {
-                        this.finish()
-                    }
                 }else if(it is UserState.queryUserIsNull){
                     loadingDialog.dismissAllowingStateLoss()
                     loginUserNameLayout.background = ContextCompat.getDrawable(

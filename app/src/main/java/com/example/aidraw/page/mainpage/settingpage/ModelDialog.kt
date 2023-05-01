@@ -1,7 +1,6 @@
 package com.example.aidraw.page.mainpage.settingpage
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,75 +11,80 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.aidraw.Bean.ModelBean
 import com.example.aidraw.Bean.SamplerBean
 import com.example.aidraw.R
+import com.example.aidraw.databinding.DialogModelBinding
 import com.example.aidraw.databinding.DialogSamplerBinding
 import com.example.aidraw.pool.CachePool
 import com.example.aidraw.pool.ConstantPool
 import com.example.aidraw.viewmodel.SettingViewModel
 
-class SamplerDialog: DialogFragment() {
+class ModelDialog: DialogFragment() {
 
     companion object{
-        val TAG = SamplerDialog::class.java.name
+        val TAG = ModelDialog::class.java.name
     }
 
-    private lateinit var samplers: List<SamplerBean>
-    private val settingViewModel: SettingViewModel by activityViewModels()
+    private lateinit var dialogModelBinding: DialogModelBinding
+    private lateinit var models: List<ModelBean>
     private var currentIndex = 0
-    private lateinit var dialogSamplerBinding: DialogSamplerBinding
-    private lateinit var samplerAdapter: SamplerAdapter
+    private val settingViewModel: SettingViewModel by activityViewModels()
+    private lateinit var modelAdapter: ModelAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        samplers = ConstantPool.samplers.mapIndexed {
-            index , s ->
-            if(settingViewModel.getSampler() == null){
+        models = CachePool.instance.supportModels.mapIndexed { index, s ->
+            if(settingViewModel.getModel() == null){
                 if(s.equals(CachePool.instance.model)){
-                    currentIndex = index
-                    SamplerBean(s , true)
+                    ModelBean(s , true)
                 }else{
-                    SamplerBean(s , false)
+                    ModelBean(s , false)
                 }
             }else {
-                if (s.equals(settingViewModel.getSampler())) {
-                    currentIndex = index
-                    SamplerBean(s , true)
+                if (s.equals(settingViewModel.getModel())) {
+                    ModelBean(s , true)
                 }else{
-                    SamplerBean(s , false)
+                    ModelBean(s , false)
                 }
             }
         }
 
 
+        models.forEachIndexed {
+                index, modelBean ->
+            if(modelBean.selected){
+                currentIndex = index
+                return@forEachIndexed
+            }
+        }
 
-        samplerAdapter = SamplerAdapter(
-            samplers,
+        modelAdapter = ModelAdapter(
+            models,
             this.requireContext(),
         ){
-            itemView, index ->
+                itemView, index ->
             if(currentIndex != index){
-                samplers.forEach {
-                        samplerBean ->
-                    samplerBean.selected = false
+                models.forEach {
+                        modelBean ->
+                    modelBean.selected = false
                 }
-                samplers[index].selected = true
+                models[index].selected = true
                 currentIndex = index
-                samplerAdapter.notifyDataSetChanged()
+                modelAdapter.notifyDataSetChanged()
             }
         }
-        dialogSamplerBinding.samplerList.adapter = samplerAdapter
-        dialogSamplerBinding.samplerList.layoutManager =  LinearLayoutManager(
+        dialogModelBinding.modelList.adapter = modelAdapter
+        dialogModelBinding.modelList.layoutManager =  LinearLayoutManager(
             this.requireContext(),
             RecyclerView.VERTICAL,
             false
         )
-        dialogSamplerBinding.samplerCancelButton.setOnClickListener {
+        dialogModelBinding.modelDialogCloseIcon.setOnClickListener {
             this.dismissAllowingStateLoss()
         }
-        dialogSamplerBinding.samplerDialogCloseIcon.setOnClickListener {
+        dialogModelBinding.modelCancelButton.setOnClickListener {
             this.dismissAllowingStateLoss()
         }
-        dialogSamplerBinding.samplerConfirmButton.setOnClickListener {
-            settingViewModel.changeSampler(samplers[currentIndex].name)
+        dialogModelBinding.modelConfirmButton.setOnClickListener {
+            settingViewModel.changeModel(models[currentIndex].name)
             this.dismissAllowingStateLoss()
         }
     }
@@ -89,8 +93,8 @@ class SamplerDialog: DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        dialogSamplerBinding = DialogSamplerBinding.inflate(
+    ): View? {
+        dialogModelBinding = DialogModelBinding.inflate(
             inflater,
             container,
             false
@@ -103,6 +107,8 @@ class SamplerDialog: DialogFragment() {
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
         }
-        return dialogSamplerBinding.root
+        return dialogModelBinding.root
     }
+
+
 }

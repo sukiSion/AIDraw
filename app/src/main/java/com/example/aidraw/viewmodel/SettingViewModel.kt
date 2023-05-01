@@ -32,7 +32,8 @@ class SettingViewModel: ViewModel() {
     private val _currentSampler = MutableLiveData<String>()
     val currentSampler:LiveData<String> = _currentSampler
 
-
+    private val _currentModel = MutableLiveData<String>()
+    val currentModel:LiveData<String> = _currentModel
 
     fun changeFaceRepairState(){
         if(_faceRepairSelected.value == true){
@@ -76,6 +77,10 @@ class SettingViewModel: ViewModel() {
         _currentDenoising.postValue(value)
     }
 
+    fun changeModel(value: String){
+        _currentModel.postValue(value)
+    }
+
     fun getSampler() = _currentSampler.value
     fun getScale() = _currentScale.value
     fun getWidth() = _currentWidth.value
@@ -85,4 +90,5 @@ class SettingViewModel: ViewModel() {
     fun getSteps() = _currentSteps.value
     fun getHDRepair() = _hdRepairSelected.value
 
+    fun getModel() = _currentModel.value
 }

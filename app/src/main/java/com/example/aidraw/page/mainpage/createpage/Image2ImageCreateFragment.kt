@@ -15,7 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.ImageViewTarget
 import com.bumptech.glide.request.transition.Transition
-import com.example.aidraw.R
 import com.example.aidraw.databinding.FragmentImage2ImageCreateBinding
 import com.example.aidraw.intent.CreateImageIntent
 import com.example.aidraw.intent.OtherIntent
@@ -24,7 +23,6 @@ import com.example.aidraw.state.OtherState
 import com.example.aidraw.state.SDWebUICreateState
 import com.example.aidraw.util.ExUtil
 import com.example.aidraw.util.ImageUtil
-import com.example.aidraw.viewmodel.CreateImageViewModel
 import com.example.aidraw.viewmodel.OtherViewModel
 import com.example.aidraw.viewmodel.SDWebUICreateViewModel
 import kotlinx.coroutines.launch
@@ -101,7 +99,7 @@ class Image2ImageCreateFragment(val image2ImageIntent: CreateImageIntent.Image2I
 
         lifecycleScope.launch {
             otherViewModel.otherState.collect{
-                if(it is OtherState.refreshImageStart){
+                if(it is OtherState.RefreshImageStart){
                     image2ImageLoadingLayout.visibility = View.VISIBLE
                     loadingAnimator.start()
                     image2ImageResult.visibility = View.GONE

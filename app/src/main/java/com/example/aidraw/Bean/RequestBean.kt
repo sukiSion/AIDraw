@@ -276,4 +276,12 @@ data class RequestBean(
             ""
         ).toTypedArray()
     }
+
+    // 设置切换模型的data
+    fun setChangeModelData(model : String){
+        fn_index = ConstantPool.fn_index_model
+        data = listOf(
+            model
+        ).toTypedArray()
+    }
 }

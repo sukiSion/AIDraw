@@ -32,9 +32,15 @@ MainActivity : AppCompatActivity() {
     private lateinit var containerLayout: ViewPager2
     private lateinit var fragments: List<Fragment>
     private lateinit var pageAdapter: PageAdapter
-    private lateinit var settingFragment: SettingFragment
-    private lateinit var text2ImageFragment: Text2ImageFragment
-    private lateinit var image2ImageFragment: Image2ImageFragment
+    private val settingFragment: SettingFragment by lazy {
+        SettingFragment()
+    }
+    private val text2ImageFragment: Text2ImageFragment by lazy {
+        Text2ImageFragment()
+    }
+    private val image2ImageFragment: Image2ImageFragment by lazy {
+        Image2ImageFragment()
+    }
     private lateinit var pageChangeCallback: OnPageChangeCallback
     private lateinit var bottomItemSelectedListener: NavigationBarView.OnItemSelectedListener
     private val settingViewModel: SettingViewModel by viewModels()
@@ -57,9 +63,6 @@ MainActivity : AppCompatActivity() {
     private fun initData(){
         bottomNavLayout = activityMainBinding.navigationBottomLayout
         containerLayout  = activityMainBinding.containerLayout
-        text2ImageFragment = Text2ImageFragment()
-        image2ImageFragment = Image2ImageFragment()
-        settingFragment = SettingFragment()
         fragments = listOf(
             text2ImageFragment,
             image2ImageFragment,

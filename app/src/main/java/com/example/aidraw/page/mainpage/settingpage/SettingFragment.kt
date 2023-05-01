@@ -17,15 +17,22 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.aidraw.R
 import com.example.aidraw.databinding.FragmentSettingBinding
+import com.example.aidraw.intent.SDWebUICreateIntent
 import com.example.aidraw.page.mainpage.othepage.LoadingDialog
 import com.example.aidraw.pool.CachePool
 import com.example.aidraw.pool.ConstantPool
 import com.example.aidraw.pool.SpKey
+import com.example.aidraw.state.SDWebUICreateState
 import com.example.aidraw.util.ExUtil
+import com.example.aidraw.viewmodel.SDWebUICreateViewModel
 import com.example.aidraw.viewmodel.SettingViewModel
 import com.tencent.mmkv.MMKV
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -47,17 +54,23 @@ class SettingFragment: Fragment() {
     private lateinit var currentSteps: TextView
     private lateinit var currentScale: TextView
     private lateinit var currentSampler: EditText
+    private lateinit var currentModel: EditText
     private lateinit var currrentDenoising: TextView
+    private lateinit var refreshSupportModels: ImageView
     private lateinit var widthChangeListener: SeekBar.OnSeekBarChangeListener
     private lateinit var heightChangeListener: SeekBar.OnSeekBarChangeListener
     private lateinit var scaleChangeListener: SeekBar.OnSeekBarChangeListener
     private lateinit var stepsChangeListener: SeekBar.OnSeekBarChangeListener
     private lateinit var denoisingChangeListener: SeekBar.OnSeekBarChangeListener
+    private val sdWebUICreateViewModel: SDWebUICreateViewModel by viewModels()
     private lateinit var hideSubmitTip: TextView
     private lateinit var submitButton: Button
     private val loadingDialog: LoadingDialog by lazy {
         LoadingDialog()
     }
+//    private val  samplerDialog by lazy { SamplerDialog() }
+//    private val  modelDialog by lazy { ModelDialog() }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,6 +94,7 @@ class SettingFragment: Fragment() {
         initData()
         initWidget()
         // 处理State
+        handleState()
     }
 
 
@@ -99,8 +113,10 @@ class SettingFragment: Fragment() {
         currentHeight = fragmentSettingBinding.height
         currentSteps = fragmentSettingBinding.steps
         currentScale = fragmentSettingBinding.scale
+        refreshSupportModels = fragmentSettingBinding.refrshSupportModelsIcon
         currrentDenoising = fragmentSettingBinding.denoising
         currentSampler = fragmentSettingBinding.sampler
+        currentModel = fragmentSettingBinding.model
         hideSubmitTip = fragmentSettingBinding.hideSubmitTip
         submitButton = fragmentSettingBinding.configSubmitButton
 
@@ -215,6 +231,12 @@ class SettingFragment: Fragment() {
             currentSampler.text = Editable.Factory.getInstance().newEditable(it)
         }
 
+        settingViewModel.currentModel.observe(
+            viewLifecycleOwner
+        ){
+            currentModel.text = Editable.Factory.getInstance().newEditable(it)
+        }
+
         settingViewModel.faceRepairSelected.observe(
             viewLifecycleOwner
         ){
@@ -267,6 +289,7 @@ class SettingFragment: Fragment() {
         ExUtil.setLinearGradientText(fragmentSettingBinding.scaleTitle , this.requireContext())
         ExUtil.setLinearGradientText(fragmentSettingBinding.denoisingTitle ,  this.requireContext())
         ExUtil.setLinearGradientText(fragmentSettingBinding.samplerTitle , this.requireContext())
+        ExUtil.setLinearGradientText(fragmentSettingBinding.modelTitle , this.requireContext())
 
         widthSeekBar.setOnSeekBarChangeListener(widthChangeListener)
         // 由于最小值是64,而每一次值得改变都是原本的值+64，所以最大值应改减去64
@@ -304,11 +327,27 @@ class SettingFragment: Fragment() {
             false
         }
         currentSampler.text = Editable.Factory.getInstance().newEditable(CachePool.instance.sampler)
-        currentSampler.setOnClickListener {
-            val  samplerDialog = SamplerDialog()
+        currentSampler .setOnClickListener {
+            val samplerDialog = SamplerDialog()
             samplerDialog.show(
                 parentFragmentManager,
                 SamplerDialog.TAG
+            )
+        }
+
+        // 可以获取焦点但是不能弹出软键盘
+        currentModel.inputType = EditorInfo.TYPE_NULL
+        // 当将 EditText 的 inputType 设置为 EditorInfo.TYPE_NULL 后，会导致 EditText 失去了获取焦点的能力，因此需要在代码中为其设置 setOnTouchListener，以便在用户点击时获取焦点。
+        currentModel.setOnTouchListener { _, _ ->
+            currentModel.requestFocusFromTouch()
+            false
+        }
+        currentModel.text = Editable.Factory.getInstance().newEditable(CachePool.instance.model)
+        currentModel.setOnClickListener {
+            val modelDialog = ModelDialog()
+            modelDialog.show(
+                parentFragmentManager,
+                ModelDialog.TAG
             )
         }
 
@@ -321,6 +360,14 @@ class SettingFragment: Fragment() {
 
         submitButton.setOnClickListener {
             submit()
+        }
+
+        refreshSupportModels.setOnClickListener {
+            sdWebUICreateViewModel.post(
+                SDWebUICreateIntent.GetSupportModels(
+                    ExUtil.getAndroidId(requireContext())
+                )
+            )
         }
     }
 
@@ -366,9 +413,63 @@ class SettingFragment: Fragment() {
                 CachePool.instance.sampler = it
             }
         }
-        ExUtil.toast(
-            requireContext(),
-            R.string.change_success
-        )
+        if(settingViewModel.getModel() == null){
+            ExUtil.toast(
+                requireContext(),
+                R.string.change_success
+            )
+        }else{
+            settingViewModel.getModel()?.let {
+                if(!it.equals(CachePool.instance.model)){
+                    sdWebUICreateViewModel.post(
+                        SDWebUICreateIntent.ChangModel(
+                            model = it,
+                            ExUtil.getAndroidId(requireContext())
+                        )
+                    )
+                }else{
+                    ExUtil.toast(
+                        requireContext(),
+                        R.string.change_success
+                    )
+                }
+            }
+        }
+    }
+
+    private fun handleState(){
+        lifecycleScope.launch {
+            sdWebUICreateViewModel.sdWebUICreateState.collect{
+                if(it is SDWebUICreateState.Creating){
+                    loadingDialog.show(
+                        parentFragmentManager,
+                        LoadingDialog.TAG
+                    )
+                }else if(it is SDWebUICreateState.ChangModelSuccess){
+                    if(loadingDialog.isVisible){
+                        loadingDialog.dismissAllowingStateLoss()
+                    }
+                    CachePool.instance.model = it.model
+                    ExUtil.toast(
+                        requireContext(),
+                        R.string.change_success
+                    )
+                }
+                else if(it is SDWebUICreateState.ImageCreateError){
+                    if(loadingDialog.isVisible){
+                        loadingDialog.dismissAllowingStateLoss()
+                    }
+                }else if(it is SDWebUICreateState.GetSupportModelSuccess){
+                    CachePool.instance.supportModels = it.models
+                    if(loadingDialog.isVisible){
+                        loadingDialog.dismissAllowingStateLoss()
+                    }
+                    ExUtil.toast(
+                        requireContext(),
+                        R.string.model_refresh_success
+                    )
+                }
+            }
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.example.aidraw.state
 
+import com.example.aidraw.Bean.ChangModelResultBean
+
 sealed interface SDWebUICreateState {
     class ImageCreateResult(val name: String):SDWebUICreateState
     class ImageCreateError(val exception: Throwable):SDWebUICreateState
@@ -19,5 +21,10 @@ sealed interface SDWebUICreateState {
         val ensd: Int
     ): SDWebUICreateState
     object GetImageInformationFail: SDWebUICreateState
+
+    data class ChangModelSuccess(val model: String) : SDWebUICreateState
+
+    data class GetSupportModelSuccess(val models: List<String>): SDWebUICreateState
+    data class InitAppSuccess(val aboutModelData: ChangModelResultBean): SDWebUICreateState
     object Creating : SDWebUICreateState
 }

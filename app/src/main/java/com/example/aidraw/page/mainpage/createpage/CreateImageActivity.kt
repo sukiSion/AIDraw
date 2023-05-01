@@ -3,7 +3,6 @@ package com.example.aidraw.page.mainpage.createpage
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -23,7 +22,6 @@ import com.example.aidraw.util.ExUtil
 import com.example.aidraw.viewmodel.CreateImageViewModel
 import com.example.aidraw.viewmodel.OtherViewModel
 import com.example.aidraw.viewmodel.SDWebUICreateViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CreateImageActivity : AppCompatActivity() {
@@ -163,7 +161,7 @@ class CreateImageActivity : AppCompatActivity() {
             otherViewModel.otherState.collect {
                 it?.apply {
                     when (this) {
-                        is OtherState.downloadImageSuccess -> {
+                        is OtherState.DownloadImageSuccess -> {
                             createImageViewModel.setCurrentImageUri(this.imageUri)
                             loadingDialog.dismissAllowingStateLoss()
                             ExUtil.toast(
@@ -172,7 +170,7 @@ class CreateImageActivity : AppCompatActivity() {
                             )
                         }
 
-                        is OtherState.shareImageSuccess -> {
+                        is OtherState.ShareImageSuccess -> {
                             createImageViewModel.setCurrentImageUri(this.imageUri)
                             loadingDialog.dismissAllowingStateLoss()
                             ExUtil.sharePhoto(
@@ -182,7 +180,7 @@ class CreateImageActivity : AppCompatActivity() {
                             )
                         }
 
-                        is OtherState.downloadError -> {
+                        is OtherState.DownloadError -> {
                             loadingDialog.dismissAllowingStateLoss()
                             ExUtil.toast(
                                 this@CreateImageActivity,
@@ -190,21 +188,21 @@ class CreateImageActivity : AppCompatActivity() {
                             )
                         }
 
-                        is OtherState.downloading -> {
+                        is OtherState.Downloading -> {
                             loadingDialog.show(
                                 supportFragmentManager,
                                 LoadingDialog.TAG
                             )
                         }
 
-                        is OtherState.refreshImageStart -> {
+                        is OtherState.RefreshImageStart -> {
                             createImageViewModel.setCurentCreateResult(null)
                             createImageViewModel.setCurrentImageUri(null)
                             downloadButton.isEnabled = false
                             shareButton.isEnabled = false
                             refreshButton.isEnabled = false
                         }
-                        is OtherState.refreshImageEnd -> {
+                        is OtherState.RefreshImageEnd -> {
                             createImageViewModel.setCurentCreateResult(this.imageUrl)
                             shareButton.isEnabled = true
                             downloadButton.isEnabled = true

@@ -7,10 +7,13 @@ class CachePool private constructor(
     var steps: Int = 20, // no
     var adjustmentWidth: Int = 0,
     var adjustmentHeight: Int = 0,
-    var sampler: String = ConstantPool.samplers[0].name, // no
+    var sampler: String = ConstantPool.samplers[0], // no
     var denoisiong: Float = 0.7f, // no
     var hdRepairSwitch: Boolean = false,
-    var faceRepairSwitch: Boolean = false // no
+    var model: String = "",
+    var supportModels: List<String> = listOf(),
+    var faceRepairSwitch: Boolean = false, // no
+
 ) {
     companion object {
         val instance: CachePool by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {

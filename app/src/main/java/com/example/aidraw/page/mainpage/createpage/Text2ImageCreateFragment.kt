@@ -1,7 +1,6 @@
 package com.example.aidraw.page.mainpage.createpage
 
 import android.animation.ObjectAnimator
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
-import androidx.activity.viewModels
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +22,6 @@ import com.example.aidraw.intent.SDWebUICreateIntent
 import com.example.aidraw.state.OtherState
 import com.example.aidraw.state.SDWebUICreateState
 import com.example.aidraw.util.ExUtil
-import com.example.aidraw.viewmodel.CreateImageViewModel
 import com.example.aidraw.viewmodel.OtherViewModel
 import com.example.aidraw.viewmodel.SDWebUICreateViewModel
 import kotlinx.coroutines.launch
@@ -93,7 +90,7 @@ class Text2ImageCreateFragment(val text2ImageIntent: CreateImageIntent.Text2Imag
     private fun handleState(){
         lifecycleScope.launch {
             otherViewModel.otherState.collect{
-                if(it is OtherState.refreshImageStart){
+                if(it is OtherState.RefreshImageStart){
                     text2ImageLoadingLayout.visibility = View.VISIBLE
                     loadingAnimator.start()
                     text2ImageResult.visibility = View.GONE

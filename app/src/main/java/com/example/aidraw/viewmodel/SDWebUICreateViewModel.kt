@@ -2,6 +2,7 @@ package com.example.aidraw.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.aidraw.Bean.ChangModelResultBean
 import com.example.aidraw.Bean.OutPutBean
 import com.example.aidraw.Bean.ResultBean
 import com.example.aidraw.intent.SDWebUICreateIntent
@@ -70,6 +71,22 @@ class SDWebUICreateViewModel : ViewModel(){
                             sessionHash = it.sessionHash
                         )
                     }
+                    is SDWebUICreateIntent.ChangModel -> {
+                        changModel(
+                            model = it.model,
+                            sessionHash = it.sessionHash
+                        )
+                    }
+                    is SDWebUICreateIntent.GetSupportModels -> {
+                        getSupportModel(
+                            sessionHash = it.sessionHash
+                        )
+                    }
+                    is SDWebUICreateIntent.InitApp -> {
+                        initApp(
+                            sessionHash = it.sessionHash
+                        )
+                    }
                 }
             }
         }
@@ -78,6 +95,81 @@ class SDWebUICreateViewModel : ViewModel(){
     fun post(intent: SDWebUICreateIntent){
         viewModelScope.launch {
             SDWebUICreateInentChannel.send(intent)
+        }
+    }
+
+    private fun initApp(
+        sessionHash: String
+    ){
+        viewModelScope.launch (context = this.viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
+                context: CoroutineContext, exception: Throwable ->
+            viewModelScope.launch(Dispatchers.Main + context) {
+                _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(exception))
+            }
+        }){
+            SDWebUIRepo.initApp(sessionHash = sessionHash)
+                .onStart {
+                    withContext(Dispatchers.Main){
+                        _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                    }
+                }
+                .flowOn(Dispatchers.IO)
+                .collect{
+                    handleInitAppResult(resultBean = it)?.apply {
+                        _SDWebUICreateState.emit(
+                            SDWebUICreateState.InitAppSuccess(this)
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun getSupportModel(sessionHash: String){
+        viewModelScope.launch (context = this.viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
+                context: CoroutineContext, exception: Throwable ->
+            viewModelScope.launch(Dispatchers.Main + context) {
+                _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(exception))
+            }
+        }){
+            SDWebUIRepo.getSupportModels(sessionHash)
+                .onStart {
+                    withContext(Dispatchers.Main){
+                        _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                    }
+                }
+                .flowOn(Dispatchers.IO)
+                .collect{
+                    handleGetSupportModelResult(resultBean = it)?.apply {
+                        _SDWebUICreateState.emit(SDWebUICreateState.GetSupportModelSuccess(this))
+                    }
+                }
+        }
+    }
+
+    private fun changModel(
+        model: String,
+        sessionHash: String
+    ){
+        viewModelScope.launch (context = this.viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
+                context: CoroutineContext, exception: Throwable ->
+            viewModelScope.launch(Dispatchers.Main + context) {
+                _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(exception))
+            }
+        }){
+           SDWebUIRepo.changeModel(model = model , sessionHash = sessionHash)
+               .onStart {
+                   withContext(Dispatchers.Main){
+                       _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                   }
+               }
+               .flowOn(Dispatchers.IO)
+               .collect{
+                   handleChangeModelResult(resultBean = it)?.apply {
+                       _SDWebUICreateState.emit(
+                           SDWebUICreateState.ChangModelSuccess(this)
+                       )
+                   }
+               }
         }
     }
 
@@ -319,7 +411,6 @@ class SDWebUICreateViewModel : ViewModel(){
 
 
 
-
             return SDWebUICreateState.GetImageInformationSuccess(
                 positionPrompt = positionPrompt,
                 negationPrompt = negationPrompt,
@@ -337,4 +428,57 @@ class SDWebUICreateViewModel : ViewModel(){
         }
     }
 
+    // 切换模型结果解析
+    fun handleChangeModelResult(resultBean: ResultBean): String?{
+        resultBean.data.takeIf {
+            it.isNotEmpty()
+        }?.forEach {
+            if(it is LinkedTreeMap<*,*>){
+                val changModelResultBean = Gson().fromJson(Gson().toJson(it) , ChangModelResultBean::class.java)
+                if(changModelResultBean.__type__ .equals(ConstantPool.type_update)){
+                    return changModelResultBean.value
+                }
+            }
+        }
+        return null
+    }
+
+    // 获取支持模型的结果解析
+    fun handleGetSupportModelResult(resultBean: ResultBean): List<String>?{
+        resultBean.data.takeIf {
+            it.isNotEmpty()
+        }?.forEach {
+            if(it is LinkedTreeMap<*,*>){
+                val changModelResultBean = Gson().fromJson(Gson().toJson(it) , ChangModelResultBean::class.java)
+                if(changModelResultBean.__type__ .equals(ConstantPool.type_update)){
+                    changModelResultBean.choices.takeIf {
+                        it.isNotEmpty()
+                    }?.apply {
+                        return this
+                    }
+                }
+            }
+        }
+        return null
+    }
+
+    // 初始化模型的结果解析
+    fun handleInitAppResult(resultBean: ResultBean): ChangModelResultBean?{
+        resultBean.data.takeIf {
+            it.isNotEmpty()
+        }?.forEachIndexed {
+            index: Int, any: Any ->
+            if(index == 66){
+                if(any is LinkedTreeMap<*,*>){
+                    val changModelResultBean = Gson().fromJson(Gson().toJson(any) , ChangModelResultBean::class.java)
+                    if(changModelResultBean.__type__ .equals(ConstantPool.type_update)){
+                        if(changModelResultBean.value.isNotBlank() && changModelResultBean.choices.isNotEmpty()){
+                            return changModelResultBean
+                        }
+                    }
+                }
+            }
+        }
+        return null
+    }
 }

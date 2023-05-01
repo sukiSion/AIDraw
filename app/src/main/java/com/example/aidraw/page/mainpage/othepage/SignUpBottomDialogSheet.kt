@@ -261,13 +261,6 @@ class SignUpBottomDialogSheet: BottomSheetDialogFragment() {
                         requireContext(),
                         R.string.sign_up_success
                     )
-                    val intent = Intent(requireContext() , MainActivity::class.java)
-                    startActivity(intent)
-                    activity?.takeIf {
-                        !it.isFinishing &&  !it.isDestroyed
-                    }?.apply {
-                        this.finish()
-                    }
                 }
             }
         }

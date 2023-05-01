@@ -17,6 +17,12 @@ object ConstantPool {
     const val fn_index_deepbooru_reverse_prompt = 149
     // 图生图的fn_index
     const val fn_index_image2image = 146
+    // 切换模型的fn_index
+    const val fn_index_model = 241
+    // 获取当前支持模型的fn_index
+    const val fn_index_support_models = 0
+    // 初始化WebUI数据的fn_index
+    const val fn_index_init_sd_web_ui = 244
     // 获取图片信息的fn_index
     const val fn_index_get_image_information = 165
     // 高度和宽度的最小值
@@ -57,11 +63,13 @@ object ConstantPool {
     const val mask_blur_heading = ", Mask blur: "
     // 获取图片信息是重绘幅度的题头
     const val denoising_heading = ", Denoising strength: "
-
     // 上传图片的Scheme头：
     const val image_base64_scheme = "data:image/png;base64,"
     // 图片后缀
     const val image_suffix = ".png"
+
+    // 改变模型后返回结果的type
+    const val type_update = "update"
 
     val album_dir = "${Environment.DIRECTORY_PICTURES}/$appName"
     val album_content = "image/*"
@@ -73,25 +81,25 @@ object ConstantPool {
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
 
-    val samplers = listOf<SamplerBean>(
-        SamplerBean("Euler a" , true),
-        SamplerBean("Euler" , false),
-        SamplerBean("LMS" , false),
-        SamplerBean("Heun" , false),
-        SamplerBean("DPM2" , false),
-        SamplerBean("DPM2 a" , false),
-        SamplerBean("DPM++ 2S a" , false),
-        SamplerBean("DPM++ 2M" , false),
-        SamplerBean("DPM++ SDE" , false),
-        SamplerBean("DPM fast" , false),
-        SamplerBean("DPM adaptive" , false),
-        SamplerBean("LMS Karras" , false),
-        SamplerBean("DPM2 Karras" , false),
-        SamplerBean("DPM2 a Karras" , false),
-        SamplerBean("DPM++ 2S a Karras" , false),
-        SamplerBean("DPM++ 2M Karras" , false),
-        SamplerBean("DPM++ SDE Karras" , false),
-        SamplerBean("DDIM" , false),
-        SamplerBean("PLMS" , false),
+    val samplers = listOf(
+        "Euler a" ,
+        "Euler" ,
+        "LMS" ,
+        "Heun" ,
+        "DPM2" ,
+        "DPM2 a" ,
+        "DPM++ 2S a" ,
+        "DPM++ 2M" ,
+        "DPM++ SDE" ,
+        "DPM fast" ,
+        "DPM adaptive" ,
+        "LMS Karras" ,
+        "DPM2 Karras" ,
+        "DPM2 a Karras" ,
+        "DPM++ 2S a Karras" ,
+        "DPM++ 2M Karras" ,
+        "DPM++ SDE Karras" ,
+        "DDIM" ,
+        "PLMS"
     )
 }

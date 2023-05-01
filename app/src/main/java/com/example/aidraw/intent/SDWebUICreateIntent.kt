@@ -31,4 +31,17 @@ sealed interface SDWebUICreateIntent{
         val imageBase64: String ,
         val sessionHash: String
     ): SDWebUICreateIntent
+
+    class ChangModel(
+        val model: String ,
+        val sessionHash: String
+    ): SDWebUICreateIntent
+
+    class GetSupportModels(
+        val sessionHash: String
+    ): SDWebUICreateIntent
+
+    class InitApp(
+        val sessionHash: String
+    ): SDWebUICreateIntent
 }
