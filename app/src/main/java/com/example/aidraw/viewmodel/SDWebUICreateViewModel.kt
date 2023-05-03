@@ -25,39 +25,47 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
-class SDWebUICreateViewModel : ViewModel(){
+class SDWebUICreateViewModel : ViewModel() {
 
     // SdWebUI事件发送和处理管道
-    private var SDWebUICreateInentChannel:Channel<SDWebUICreateIntent> = Channel(Channel.UNLIMITED)
+    private var SDWebUICreateInentChannel: Channel<SDWebUICreateIntent> = Channel(Channel.UNLIMITED)
 
     // SdWebUI结果状态发送和处理管理
-    private val _SDWebUICreateState:MutableStateFlow<SDWebUICreateState?> = MutableStateFlow(null)
-    val sdWebUICreateState : StateFlow<SDWebUICreateState?> = _SDWebUICreateState.asStateFlow()
+    private val _SDWebUICreateState: MutableStateFlow<SDWebUICreateState?> = MutableStateFlow(null)
+    val sdWebUICreateState: StateFlow<SDWebUICreateState?> = _SDWebUICreateState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            SDWebUICreateInentChannel.consumeAsFlow().collect{
-                when(it){
+            SDWebUICreateInentChannel.consumeAsFlow().collect {
+                when (it) {
+                    // 文本生成图片的行为
                     is SDWebUICreateIntent.Text2Image -> {
+                        // 文本生成图片的方法
                         text2image(
                             positionPrompt = it.positionPrompt,
                             negation = it.negationPrompt,
                             sessionHash = it.sessionHash
                         )
                     }
+                    // 使用DeepBooru反推提示词的行为
                     is SDWebUICreateIntent.DeepBooruReversePrompt -> {
+                        // 使用DeepBooru反推提示词的方法
                         deepBooruReversePrompt(
                             imageBase64 = it.imageBase64,
                             sessionHash = it.sessionHash
                         )
                     }
+                    // 使用Clip反推提示词的行为
                     is SDWebUICreateIntent.ClipReversePrompt -> {
+                        // 使用Clip反推提示词的方法
                         clipReversePrompt(
                             imageBase64 = it.imageBase64,
                             sessionHash = it.sessionHash
                         )
                     }
+                    // 图片生成图片的行为
                     is SDWebUICreateIntent.Image2Image -> {
+                        // 图片生成图片的方法
                         image2image(
                             positionPrompt = it.positionPrompt,
                             negationPrompt = it.negationPrompt,
@@ -65,24 +73,32 @@ class SDWebUICreateViewModel : ViewModel(){
                             sessionHash = it.sessionHash
                         )
                     }
+                    // 获取图片信息的行为
                     is SDWebUICreateIntent.GetImageInformation -> {
+                        // 获取图片信息的方法
                         getImageformation(
                             imageBase64 = it.imageBase64,
                             sessionHash = it.sessionHash
                         )
                     }
+                    // 切换模型的行为
                     is SDWebUICreateIntent.ChangModel -> {
+                        // 改变模型的方法
                         changModel(
                             model = it.model,
                             sessionHash = it.sessionHash
                         )
                     }
+                    // 获取应用支持模型的行为
                     is SDWebUICreateIntent.GetSupportModels -> {
+                        // 过去应用支持模型的方法
                         getSupportModel(
                             sessionHash = it.sessionHash
                         )
                     }
+                    // 初始化App的行为
                     is SDWebUICreateIntent.InitApp -> {
+                        // 初始化App的方法
                         initApp(
                             sessionHash = it.sessionHash
                         )
@@ -92,7 +108,8 @@ class SDWebUICreateViewModel : ViewModel(){
         }
     }
 
-    fun post(intent: SDWebUICreateIntent){
+    // 发送对应的行为
+    fun post(intent: SDWebUICreateIntent) {
         viewModelScope.launch {
             SDWebUICreateInentChannel.send(intent)
         }

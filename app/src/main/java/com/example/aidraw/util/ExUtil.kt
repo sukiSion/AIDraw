@@ -1,6 +1,7 @@
 package com.example.aidraw.util
 
 import android.app.Activity
+import android.app.Application
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
@@ -94,7 +95,7 @@ object ExUtil {
             cursor.moveToFirst().let {
                 val id = cursor.getColumnIndex(filePathColumn[0])
                 if(id > -1){
-                    val uriPath = FileProvider.getUriForFile(context, "com.sion.ai_painter.fileProvider" , File(cursor.getString(id)))
+                    val uriPath = FileProvider.getUriForFile(context, "com.example.aidraw.fileProvider" , File(cursor.getString(id)))
                     val intent = Intent(Intent.ACTION_SEND).apply {
                         setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         putExtra(Intent.EXTRA_STREAM, uriPath)

@@ -198,6 +198,7 @@ class Image2ImageFragment: Fragment() {
         image2ImageNegationPromptInput.clearFocus()
     }
 
+
     private fun initWidget(){
 
         image2ImagePositionPromptInput.setOnFocusChangeListener { v, hasFocus ->
@@ -210,6 +211,7 @@ class Image2ImageFragment: Fragment() {
                 }
             }
         }
+
 
         image2ImageNegationPromptInput.setOnFocusChangeListener { v, hasFocus ->
             when(hasFocus) {
