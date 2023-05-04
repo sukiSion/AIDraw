@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.aidraw.Bean.ChangModelResultBean
 import com.example.aidraw.Bean.OutPutBean
+import com.example.aidraw.Bean.PreprocessingBean
+import com.example.aidraw.Bean.PreprocessingResultBean
 import com.example.aidraw.Bean.ResultBean
 import com.example.aidraw.intent.SDWebUICreateIntent
 import com.example.aidraw.net.ApiUrl
@@ -18,8 +20,11 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -103,6 +108,12 @@ class SDWebUICreateViewModel : ViewModel() {
                             sessionHash = it.sessionHash
                         )
                     }
+                    is SDWebUICreateIntent.Preprocess -> {
+                        preprocess(
+                            preprocessors = it.preprocesses,
+                            sessionHash = it.sessionHash
+                        )
+                    }
                 }
             }
         }
@@ -112,6 +123,63 @@ class SDWebUICreateViewModel : ViewModel() {
     fun post(intent: SDWebUICreateIntent) {
         viewModelScope.launch {
             SDWebUICreateInentChannel.send(intent)
+        }
+    }
+
+    private fun preprocess(preprocessors: List<Pair<String , String>> , sessionHash: String){
+        viewModelScope.launch (context = this.viewModelScope.coroutineContext + AppCoroutineExceptionHandler{
+                context: CoroutineContext, exception: Throwable ->
+            viewModelScope.launch(Dispatchers.Main + context) {
+                _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(exception))
+            }
+        }){
+            val imageBase64s = mutableListOf<String>()
+
+            flow {
+                preprocessors.forEach {
+                    if(it.second.equals(ConstantPool.canny_preprocessor)){
+                        emit(SDWebUIRepo.preprocessing(
+                            fn_index = ConstantPool.fn_index_canny,
+                            sessionHash = sessionHash,
+                            preprocessData = it
+                        ))
+                    }else if(it.second.equals(ConstantPool.seg_preprocessor)){
+                       emit(SDWebUIRepo.preprocessing(
+                           fn_index = ConstantPool.fn_index_seg,
+                           sessionHash = sessionHash,
+                           preprocessData = it
+                       ))
+                    }else if(it.second.equals(ConstantPool.leres_preprocessor)){
+                       emit(SDWebUIRepo.preprocessing(
+                           fn_index = ConstantPool.fn_index_leres,
+                           sessionHash = sessionHash,
+                           preprocessData = it
+                       ))
+                    }
+                }
+            }.onStart {
+                withContext(Dispatchers.Main){
+                    _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                }
+            }
+                .flowOn(Dispatchers.IO)
+                .onCompletion {
+                    if(imageBase64s.size == preprocessors.size){
+                        withContext(Dispatchers.Main){
+                            _SDWebUICreateState.emit(
+                                SDWebUICreateState.PreprocessSuccess(
+                                    imageBase64s
+                                )
+                            )
+                        }
+                    }
+                }
+                .collect{
+                    handleProcessingResult(it)?.let {
+                        imageBase64s.add(it)
+                    }
+                }
+
         }
     }
 
@@ -422,7 +490,13 @@ class SDWebUICreateViewModel : ViewModel() {
                 val ensdLastIndex = imageInformation.indexOf(ConstantPool.mask_blur_heading)
                 imageInformation.substring(clipSkipLastIndex + ConstantPool.ensd_heading.length , ensdLastIndex).toInt()
 
-            }else{
+            }
+            else if(imageInformation.contains(ConstantPool.hires_upscale_heading)){
+                val ensdLastIndex = imageInformation.indexOf(ConstantPool.hires_upscale_heading)
+                imageInformation.substring(clipSkipLastIndex + ConstantPool.ensd_heading.length , ensdLastIndex).toInt()
+
+            }
+            else{
                 imageInformation.substring(clipSkipLastIndex + ConstantPool.ensd_heading.length , imageInformation.length).toInt()
             }
 
@@ -479,6 +553,26 @@ class SDWebUICreateViewModel : ViewModel() {
         return null
     }
 
+    // 预处理结果解析
+    fun handleProcessingResult(resultBean: ResultBean):String?{
+        resultBean.data.takeIf {
+            it.isNotEmpty()
+        }?.get(0).apply {
+            if(this is LinkedTreeMap<*,*>) {
+                val preprocessingResultBean =
+                    Gson().fromJson(Gson().toJson(this), PreprocessingResultBean::class.java)
+                if(preprocessingResultBean.visible && preprocessingResultBean.__type__ == ConstantPool.type_update){
+                    if(preprocessingResultBean.value.contains(ConstantPool.image_base64_scheme)){
+                        val valule = preprocessingResultBean.value
+                        val imageBase64 = valule.substring(ConstantPool.image_base64_scheme.length , valule.length)
+                        return imageBase64
+                    }
+                }
+            }
+        }
+        return null
+    }
+
     // 初始化模型的结果解析
     fun handleInitAppResult(resultBean: ResultBean): ChangModelResultBean?{
         resultBean.data.takeIf {
@@ -498,4 +592,6 @@ class SDWebUICreateViewModel : ViewModel() {
         }
         return null
     }
+
+
 }

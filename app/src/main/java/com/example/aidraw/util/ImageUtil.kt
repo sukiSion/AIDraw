@@ -20,6 +20,7 @@ import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileInputStream
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
@@ -323,6 +324,50 @@ object ImageUtil {
             }
         }
         return result
+    }
+
+    /**
+     * 将Base64编码转换为图片
+     * @param base64Str
+     * @param path
+     * @return true
+     */
+    fun base64ToFile(base64Str: String?, path: String?): Boolean {
+        val data = Base64.decode(base64Str, Base64.NO_WRAP)
+        for (i in data.indices) {
+            if (data[i] < 0) {
+                //调整异常数据
+                data[i] = (data[i] + 256).toByte()
+            }
+        }
+        var os: OutputStream? = null
+        return try {
+            os = FileOutputStream(path)
+            os.write(data)
+            os.flush()
+            os.close()
+            true
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+            false
+        } catch (e: IOException) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    fun getCacheImagePath(context: Context):String{
+        val storageFile: File? =
+            if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) {
+                context.externalCacheDir
+            } else {
+                context.cacheDir
+            }
+        val photoFile = File.createTempFile("tmp_image_file", ConstantPool.image_suffix, storageFile).apply {
+            createNewFile()
+            delete()
+        }
+        return photoFile.absolutePath
     }
 
     fun getCameraUri(

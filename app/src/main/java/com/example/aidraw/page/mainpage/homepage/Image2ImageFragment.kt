@@ -62,7 +62,6 @@ class Image2ImageFragment: Fragment() {
     private lateinit var openCameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
     private var takePhotoUri: Pair<Uri? , String?>? = null
-
     private val loadingDialog: LoadingDialog by lazy {
         LoadingDialog()
     }

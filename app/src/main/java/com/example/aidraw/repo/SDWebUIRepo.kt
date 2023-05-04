@@ -11,7 +11,6 @@ import com.example.aidraw.pool.ConstantPool
 import kotlinx.coroutines.flow.Flow
 
 import kotlinx.coroutines.flow.flow
-import java.util.Base64
 
 
 object SDWebUIRepo {
@@ -105,6 +104,27 @@ object SDWebUIRepo {
             )
         ))
     }
+
+    suspend fun preprocessing(fn_index: Int ,  preprocessData: Pair<String , String>  , sessionHash: String):ResultBean
+    = appService.sdWebUINetWork(
+            RequestBean(
+                fn_index = fn_index ,
+                session_hash = sessionHash,
+            ).run {
+                if(fn_index == ConstantPool.fn_index_leres){
+                    setLeResData(
+                        imageBase64 = preprocessData.first,
+                        preprocessor = preprocessData.second
+                    )
+                }else{
+                    setCannyAndSegData(
+                        preprocessor = preprocessData.second,
+                        imageBase64 =  preprocessData.first
+                    )
+                }
+                this
+            }
+        )
 
 
 

@@ -42,6 +42,11 @@ sealed interface SDWebUICreateIntent{
     ): SDWebUICreateIntent
 
     class InitApp(
+    val sessionHash: String
+    ): SDWebUICreateIntent
+
+    class Preprocess(
+        val preprocesses: List<Pair<String , String>> ,
         val sessionHash: String
     ): SDWebUICreateIntent
 }

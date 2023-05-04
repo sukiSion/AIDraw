@@ -11,10 +11,12 @@ import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.example.aidraw.R
 import com.example.aidraw.databinding.ActivityMainBinding
+import com.example.aidraw.page.mainpage.homepage.ControlNetFragment
 import com.example.aidraw.page.mainpage.homepage.Image2ImageFragment
 import com.example.aidraw.page.mainpage.homepage.Text2ImageFragment
 import com.example.aidraw.page.mainpage.settingpage.SettingFragment
 import com.example.aidraw.util.ExUtil
+import com.example.aidraw.viewmodel.ControlNetViewModel
 import com.example.aidraw.viewmodel.Image2ImageViewModel
 import com.example.aidraw.viewmodel.MainViewModel
 import com.example.aidraw.viewmodel.SettingViewModel
@@ -38,6 +40,9 @@ MainActivity : AppCompatActivity() {
     private val text2ImageFragment: Text2ImageFragment by lazy {
         Text2ImageFragment()
     }
+    private val controlNetFragment: ControlNetFragment by lazy {
+        ControlNetFragment()
+    }
     private val image2ImageFragment: Image2ImageFragment by lazy {
         Image2ImageFragment()
     }
@@ -46,6 +51,7 @@ MainActivity : AppCompatActivity() {
     private val settingViewModel: SettingViewModel by viewModels()
     private val image2ImageViewModel: Image2ImageViewModel by viewModels()
     private val text2ImageViewModel: Text2ImageViewModel by viewModels()
+    private val controlNetViewModel: ControlNetViewModel by viewModels()
     private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +72,7 @@ MainActivity : AppCompatActivity() {
         fragments = listOf(
             text2ImageFragment,
             image2ImageFragment,
+            controlNetFragment,
             settingFragment
         )
         pageAdapter = PageAdapter(
@@ -83,6 +90,9 @@ MainActivity : AppCompatActivity() {
                         bottomNavLayout.selectedItemId = R.id.image_2_image_item
                     }
                     2 -> {
+                        bottomNavLayout.selectedItemId = R.id.control_net_item
+                    }
+                    3 -> {
                         bottomNavLayout.selectedItemId = R.id.setting_item
                     }
                 }
@@ -114,9 +124,13 @@ MainActivity : AppCompatActivity() {
                     R.id.image_2_image_item -> {
                         containerLayout.currentItem = 1
                     }
-                    R.id.setting_item -> {
+                    R.id.control_net_item -> {
                         containerLayout.currentItem = 2
                     }
+                    R.id.setting_item -> {
+                        containerLayout.currentItem = 3
+                    }
+
                 }
                 return true
             }

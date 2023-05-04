@@ -13,6 +13,7 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.aidraw.R
@@ -47,7 +48,7 @@ class SignUpBottomDialogSheet: BottomSheetDialogFragment() {
     private lateinit var signUpConfirmPasswordLayout: FrameLayout
     private lateinit var signUpButton: Button
     private lateinit var editTextFocusBg: GradientDrawable
-    private val userViewModel:  UserViewModel by viewModels()
+    private val userViewModel:  UserViewModel by activityViewModels()
     private val loadingDialog: LoadingDialog by lazy {
         LoadingDialog()
     }

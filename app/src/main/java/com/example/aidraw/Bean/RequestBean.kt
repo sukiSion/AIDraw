@@ -2,15 +2,14 @@ package com.example.aidraw.Bean
 
 import com.example.aidraw.pool.CachePool
 import com.example.aidraw.pool.ConstantPool
-import java.util.Base64
 
 data class RequestBean(
-    var data: Array<Any?> = listOf<Any>(
-        "task(9sppgt5q4hambk7)",
+    var data: Array<Any?> = listOf<Any?>(
+        "task(yxq1z5yak9zck5r)",
         "",
         "",
         listOf<Any>(),
-        50,
+        20,
         "Euler a",
         false,
         false,
@@ -25,7 +24,7 @@ data class RequestBean(
         false,
         512,
         512,
-        true,
+        false,
         0.7,
         2,
         "Latent",
@@ -34,6 +33,7 @@ data class RequestBean(
         0,
         listOf<Any>(),
         "None",
+        null,
         false,
         false,
         "positive",
@@ -53,6 +53,9 @@ data class RequestBean(
         false,
         false,
         0,
+        null,
+        false,
+        50,
         listOf(
             FileBean().apply {
                 this.setFileName("AIDraw_${System.currentTimeMillis()}")
@@ -105,7 +108,7 @@ data class RequestBean(
 
     // 设置文生图的data
     fun setText2ImageData(position: String , negation: String){
-        data = listOf<Any>(
+        data = listOf(
             "task(9sppgt5q4hambk7)",
             position,
             negation,
@@ -134,6 +137,9 @@ data class RequestBean(
             CachePool.instance.adjustmentHeight,
             listOf<Any>(),
             "None",
+            null,
+            null,
+            null,
             false,
             false,
             "positive",
@@ -153,6 +159,13 @@ data class RequestBean(
             false,
             false,
             0,
+            null,
+            false,
+            null,
+            false,
+            null,
+            false,
+            50,
             listOf(
                 FileBean().apply {
                     this.setFileName("AIDraw_${System.currentTimeMillis()}")
@@ -172,7 +185,7 @@ data class RequestBean(
             0,
             position,
             negation,
-            listOf<Any>(),
+            listOf<Any?>(),
             imageBase64,
             null,
             null,
@@ -207,8 +220,11 @@ data class RequestBean(
             "",
             "",
             "",
-            listOf<Any>(),
+            listOf<Any?>(),
             "None",
+            null,
+            null,
+            null,
             "<ul>\n<li><code>CFG Scale</code> should be 2 or lower.</li>\n</ul>\n",
             true,
             true,
@@ -266,6 +282,17 @@ data class RequestBean(
             false,
             false,
             0,
+            null,
+            false,
+            null,
+            false,
+            null,
+            false,
+            50,
+            listOf<Any?>(),
+            "",
+            "",
+            "",
             listOf(
                 FileBean().apply {
                     this.setFileName("AIDraw_${System.currentTimeMillis()}")
@@ -282,6 +309,34 @@ data class RequestBean(
         fn_index = ConstantPool.fn_index_model
         data = listOf(
             model
+        ).toTypedArray()
+    }
+
+    fun setCannyAndSegData(imageBase64: String, preprocessor:String){
+        data = listOf<Any?>(
+            PreprocessingBean(imageBase64 , imageBase64),
+            preprocessor,
+            512,
+            100,
+            200,
+            512,
+            512,
+            false,
+            "Crop and Resize"
+        ).toTypedArray()
+    }
+
+    fun setLeResData(imageBase64: String, preprocessor:String){
+        data = listOf<Any?>(
+            PreprocessingBean(imageBase64 , imageBase64),
+            preprocessor,
+            512,
+            0,
+            0,
+            512,
+            512,
+            false,
+            "Crop and Resize"
         ).toTypedArray()
     }
 }

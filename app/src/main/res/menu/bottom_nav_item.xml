@@ -8,6 +8,10 @@
         android:title="@string/image_2_image_title"
         android:icon="@drawable/image_2_image_item">
     </item>
+    <item android:id="@+id/control_net_item"
+        android:title="@string/control_net"
+        android:icon="@drawable/control_net_item">
+    </item>
     <item android:id="@+id/setting_item"
         android:title="@string/setting_title"
         android:icon="@drawable/setting_item">

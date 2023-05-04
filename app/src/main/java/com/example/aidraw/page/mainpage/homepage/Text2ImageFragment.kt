@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -252,6 +253,10 @@ class Text2ImageFragment:  Fragment() {
                         if(loadingDialog.isVisible){
                             loadingDialog.dismissAllowingStateLoss()
                         }
+                        ExUtil.toast(
+                            requireContext(),
+                            R.string.get_image_information_toast
+                        )
                     }
                     else if(this is SDWebUICreateState.ImageCreateError){
                         if(loadingDialog.isVisible){

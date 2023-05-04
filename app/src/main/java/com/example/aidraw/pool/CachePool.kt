@@ -12,8 +12,10 @@ class CachePool private constructor(
     var hdRepairSwitch: Boolean = false,
     var model: String = "",
     var supportModels: List<String> = listOf(),
+    var cannySwith: Boolean = false,
+    var segSwith: Boolean = false,
+    var leresSwith: Boolean = false,
     var faceRepairSwitch: Boolean = false, // no
-
 ) {
     companion object {
         val instance: CachePool by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {

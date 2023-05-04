@@ -131,6 +131,9 @@ class Image2ImageCreateFragment(val image2ImageIntent: CreateImageIntent.Image2I
                             .load(it.name)
                             .into(object : ImageViewTarget<Drawable>(image2ImageResult){
                                 override fun setResource(resource: Drawable?) {
+                                    resource?.apply {
+                                        image2ImageResult.setImageDrawable(resource)
+                                    }
                                 }
 
                                 override fun onResourceReady(
@@ -141,7 +144,6 @@ class Image2ImageCreateFragment(val image2ImageIntent: CreateImageIntent.Image2I
                                     image2ImageResult.visibility = View.VISIBLE
                                     loadingAnimator.cancel()
                                     image2ImageLoadingLayout.visibility = View.GONE
-                                    image2ImageResult.setImageDrawable(resource)
                                     otherViewModel.post(OtherIntent.refreshImageEnd(it.name))
                                 }
                             })

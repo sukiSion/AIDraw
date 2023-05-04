@@ -139,6 +139,7 @@ class LoginBottomDialogSheet: BottomSheetDialogFragment() {
             }
         }
 
+
         loginPassword.setOnFocusChangeListener { v, hasFocus ->
             when(hasFocus){
                 true -> {
@@ -186,6 +187,10 @@ class LoginBottomDialogSheet: BottomSheetDialogFragment() {
                 }
             }
         }
+    }
+
+    override fun dismiss() {
+        super.dismissAllowingStateLoss()
     }
 
     private fun handleState(){

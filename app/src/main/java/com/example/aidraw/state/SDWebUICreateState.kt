@@ -1,6 +1,7 @@
 package com.example.aidraw.state
 
 import com.example.aidraw.Bean.ChangModelResultBean
+import java.util.Base64
 
 sealed interface SDWebUICreateState {
     class ImageCreateResult(val name: String):SDWebUICreateState
@@ -26,5 +27,7 @@ sealed interface SDWebUICreateState {
 
     data class GetSupportModelSuccess(val models: List<String>): SDWebUICreateState
     data class InitAppSuccess(val aboutModelData: ChangModelResultBean): SDWebUICreateState
+
+    data class PreprocessSuccess(val imageBase64s: List<String>) : SDWebUICreateState
     object Creating : SDWebUICreateState
 }

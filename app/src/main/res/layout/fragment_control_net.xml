@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+           <androidx.appcompat.widget.LinearLayoutCompat
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintTop_toTopOf="parent"
+               android:orientation="vertical">
+
+               <TextView
+                   android:id="@+id/control_net_title"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/control_net"
+                   android:textSize="40sp"
+                   android:textStyle="bold"
+                   android:textColor="@color/black"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toTopOf="parent"
+                   android:fontFamily="@font/eagle_lake_regular">
+               </TextView>
+
+               <androidx.constraintlayout.widget.ConstraintLayout
+                   android:id="@+id/contrl_net_add_image_layout"
+                   android:layout_width="match_parent"
+                   android:layout_height="300dp"
+                   android:background="@drawable/dash_bg"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   android:layout_marginTop="20dp"
+                   app:layout_constraintTop_toBottomOf="@id/text_2_image_create_button">
+
+                   <androidx.appcompat.widget.LinearLayoutCompat
+                       android:layout_width="0dp"
+                       android:foregroundGravity="center_horizontal"
+                       android:layout_marginHorizontal="20dp"
+                       android:layout_height="wrap_content"
+                       app:layout_constraintStart_toStartOf="parent"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintTop_toTopOf="parent"
+                       app:layout_constraintBottom_toBottomOf="parent"
+                       android:orientation="vertical"
+                       android:gravity="center_horizontal"
+                       android:id="@+id/control_net_image_text_layout">
+
+
+                       <ImageView
+                           android:layout_width="28dp"
+                           android:layout_height="28dp"
+                           android:src="@drawable/add_icon">
+                       </ImageView>
+
+                       <TextView
+                           android:textColor="@color/grey_b8bd"
+                           android:layout_marginTop="12dp"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="@string/add_image">
+                       </TextView>
+
+                   </androidx.appcompat.widget.LinearLayoutCompat>
+
+                   <com.google.android.material.imageview.ShapeableImageView
+                       app:shapeAppearanceOverlay="@style/image_shape"
+                       android:id="@+id/control_net_add_image"
+                       android:layout_width="0dp"
+                       android:layout_height="0dp"
+                       android:scaleType="centerCrop"
+                       android:layout_margin="10dp"
+                       app:layout_constraintStart_toStartOf="parent"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintTop_toTopOf="parent"
+                       app:layout_constraintBottom_toBottomOf="parent">
+                   </com.google.android.material.imageview.ShapeableImageView>
+
+               </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+               <androidx.appcompat.widget.LinearLayoutCompat
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="20dp"
+                   android:orientation="horizontal"
+                   android:gravity="center_vertical">
+
+                   <androidx.appcompat.widget.LinearLayoutCompat
+                       android:id="@+id/canny_radio_layout"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:paddingVertical="10dp"
+                       android:gravity="center">
+
+                       <ImageView
+                           android:id="@+id/canny_radio_icon"
+                           android:layout_width="20dp"
+                           android:layout_height="20dp"
+                           android:src="@drawable/icon_noselect_blue">
+                       </ImageView>
+
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:textColor="@color/black"
+                           android:layout_marginStart="8dp"
+                           android:text="@string/canny">
+                       </TextView>
+
+                   </androidx.appcompat.widget.LinearLayoutCompat>
+
+                   <androidx.appcompat.widget.LinearLayoutCompat
+                       android:id="@+id/seg_radio_layout"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:paddingVertical="10dp"
+                       android:gravity="center">
+
+                       <ImageView
+                           android:id="@+id/seg_radio_icon"
+                           android:layout_width="20dp"
+                           android:layout_height="20dp"
+                           android:src="@drawable/icon_noselect_blue">
+                       </ImageView>
+
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:textColor="@color/black"
+                           android:layout_marginStart="8dp"
+                           android:text="@string/seg">
+                       </TextView>
+
+                   </androidx.appcompat.widget.LinearLayoutCompat>
+
+                   <androidx.appcompat.widget.LinearLayoutCompat
+                       android:id="@+id/leres_radio_layout"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:paddingVertical="10dp"
+                       android:gravity="center">
+
+                       <ImageView
+                           android:id="@+id/leres_radio_icon"
+                           android:layout_width="20dp"
+                           android:layout_height="20dp"
+                           android:src="@drawable/icon_noselect_blue">
+                       </ImageView>
+
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:textColor="@color/black"
+                           android:layout_marginStart="8dp"
+                           android:text="@string/leres">
+                       </TextView>
+
+                   </androidx.appcompat.widget.LinearLayoutCompat>
+
+               </androidx.appcompat.widget.LinearLayoutCompat>
+
+               <Button
+                   android:id="@+id/preprocessing_button"
+                   android:layout_marginTop="20dp"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:textColor="@color/white"
+                   android:textSize="17sp"
+                   android:textAllCaps="false"
+                   android:enabled="false"
+                   android:text="@string/preprocessing"
+                   android:background="@drawable/create_button_bg"
+                   app:layout_constraintTop_toBottomOf="@id/get_image_information_layout">
+               </Button>
+
+               <androidx.appcompat.widget.LinearLayoutCompat
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="20dp"
+                   android:orientation="vertical">
+                   <androidx.appcompat.widget.LinearLayoutCompat
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:orientation="vertical"
+                       android:visibility="gone"
+                       android:layout_marginBottom="20dp"
+                       android:id="@+id/canny_layout">
+
+                       <TextView
+                           android:id="@+id/canny_title"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:textSize="20sp"
+                           android:textStyle="italic|bold"
+                           android:text="@string/canny_image">
+                       </TextView>
+
+                       <ImageView
+                           android:id="@+id/canny_image"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_marginTop="20dp"
+                           android:adjustViewBounds="true"
+                           android:scaleType="centerInside">
+                       </ImageView>
+
+
+                   </androidx.appcompat.widget.LinearLayoutCompat>
+
+                   <androidx.appcompat.widget.LinearLayoutCompat
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:orientation="vertical"
+                       android:visibility="gone"
+                       android:layout_marginBottom="20dp"
+                       android:id="@+id/seg_layout">
+
+                       <TextView
+                           android:id="@+id/seg_title"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:textSize="20sp"
+                           android:textStyle="italic|bold"
+                           android:text="@string/seg_image">
+                       </TextView>
+
+                       <ImageView
+                           android:id="@+id/seg_image"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_marginTop="20dp"
+                           android:adjustViewBounds="true"
+                           android:scaleType="centerInside">
+                       </ImageView>
+
+
+                   </androidx.appcompat.widget.LinearLayoutCompat>
+
+                   <androidx.appcompat.widget.LinearLayoutCompat
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:orientation="vertical"
+                       android:visibility="gone"
+                       android:layout_marginBottom="20dp"
+                       android:id="@+id/leres_layout">
+
+                       <TextView
+                           android:id="@+id/leres_title"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:textSize="20sp"
+                           android:textStyle="italic|bold"
+                           android:text="@string/leres_image">
+                       </TextView>
+
+                       <ImageView
+                           android:id="@+id/leres_image"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_marginTop="20dp"
+                           android:adjustViewBounds="true"
+                           android:scaleType="centerInside">
+                       </ImageView>
+
+
+                   </androidx.appcompat.widget.LinearLayoutCompat>
+               </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+           </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
