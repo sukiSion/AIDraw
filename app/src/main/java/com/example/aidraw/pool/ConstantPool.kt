@@ -10,27 +10,27 @@ object ConstantPool {
 
     const val SessionHash: String = "SessionHash"
     // t2i的fn_index
-    const val fn_index_text2img = 167
+    const val fn_index_text2img = 168
     // clip反推提示词的fn_index
-    const val fn_index_clip_reverse_prompt = 352
+    const val fn_index_clip_reverse_prompt = 353
     // dedpbooru反推提示词的fn_index
-    const val fn_index_deepbooru_reverse_prompt = 353
+    const val fn_index_deepbooru_reverse_prompt = 354
     // 图生图的fn_index
-    const val fn_index_image2image = 350
+    const val fn_index_image2image = 351
     // 切换模型的fn_index,需要改动
-    const val fn_index_model = 241
+    const val fn_index_model = 445
     // 获取当前支持模型的fn_index
     const val fn_index_support_models = 0
     // 初始化WebUI数据的fn_index
-    const val fn_index_init_sd_web_ui = 448
+    const val fn_index_init_sd_web_ui = 450
     // 获取图片信息的fn_index
-    const val fn_index_get_image_information = 369
+    const val fn_index_get_image_information = 370
     // 图片边缘检测的fn_index
-    const val fn_index_canny = 55
+    const val fn_index_canny = 56
     // 图片语义分割的fn_index
-    const val fn_index_seg = 85
+    const val fn_index_seg = 86
     // 图片深度估值的fn_index
-    const val fn_index_leres = 115
+    const val fn_index_leres = 116
     // 高度和宽度的最小值
     const val min_width_height = 64
     // 高度和宽带的最大值
@@ -69,6 +69,10 @@ object ConstantPool {
     const val mask_blur_heading = ", Mask blur: "
     // 获取图片信息是重绘幅度的题头
     const val denoising_heading = ", Denoising strength: "
+    //
+    const val SD_upscale_overlap_heading = ", SD upscale overlap: "
+    //
+    const val SD_upscale_upscaler_heading = ", SD upscale upscaler: "
     //
     const val hires_upscale_heading = ", Hires upscale:"
     // 上传图片的Scheme头：

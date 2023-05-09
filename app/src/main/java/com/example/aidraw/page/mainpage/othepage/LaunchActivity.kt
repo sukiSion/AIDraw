@@ -53,6 +53,11 @@ class LaunchActivity : AppCompatActivity() {
                         FullScreenLoadingDialog.TAG
                     )
                 }
+                else if(it is SDWebUICreateState.ImageCreateError){
+                    if(fullScreenLoadingDialog.isVisible){
+                        fullScreenLoadingDialog.dismissAllowingStateLoss()
+                    }
+                }
                 else if(it is SDWebUICreateState.InitAppSuccess){
                     CachePool.instance.supportModels = it.aboutModelData.choices
                     CachePool.instance.model = it.aboutModelData.value
@@ -76,6 +81,7 @@ class LaunchActivity : AppCompatActivity() {
                         )
                     )
                 }
+
                 else if(it is UserState.queryUserSuccess){
                     sdWebUICreateViewModel.post(
                         SDWebUICreateIntent.InitApp(

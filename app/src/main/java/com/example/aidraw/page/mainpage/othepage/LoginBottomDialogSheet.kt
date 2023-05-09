@@ -202,7 +202,8 @@ class LoginBottomDialogSheet: BottomSheetDialogFragment() {
                         parentFragmentManager,
                         LoadingDialog.TAG
                     )
-                }else if(it is UserState.queryUserSuccess){
+                }
+                else if(it is UserState.queryUserSuccess){
                     loadingDialog.dismissAllowingStateLoss()
                     ExUtil.toast(
                         requireContext(),

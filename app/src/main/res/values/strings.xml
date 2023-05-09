@@ -86,4 +86,8 @@
     <string name="model_heading">Model</string>
     <string name="clip_skip_heading">Clip skip</string>
     <string name="ensd_heading">ENSD</string>
+    <string name="upscale_upscaler_heading">Upscale upscaler</string>
+    <string name="sd_upscale_overlap_heading">SD upscale overlap</string>
+    <string name="denoising_strength_heading">Denoising strength</string>
+
 </resources>

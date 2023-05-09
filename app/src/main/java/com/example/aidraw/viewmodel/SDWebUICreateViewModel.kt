@@ -20,6 +20,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flow
@@ -163,6 +164,11 @@ class SDWebUICreateViewModel : ViewModel() {
                 }
             }
                 .flowOn(Dispatchers.IO)
+                .catch {
+                    withContext(Dispatchers.Main){
+                        _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(it))
+                    }
+                }
                 .onCompletion {
                     if(imageBase64s.size == preprocessors.size){
                         withContext(Dispatchers.Main){
@@ -199,6 +205,11 @@ class SDWebUICreateViewModel : ViewModel() {
                     }
                 }
                 .flowOn(Dispatchers.IO)
+                .catch {
+                    withContext(Dispatchers.Main){
+                        _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(it))
+                    }
+                }
                 .collect{
                     handleInitAppResult(resultBean = it)?.apply {
                         _SDWebUICreateState.emit(
@@ -223,6 +234,11 @@ class SDWebUICreateViewModel : ViewModel() {
                     }
                 }
                 .flowOn(Dispatchers.IO)
+                .catch {
+                    withContext(Dispatchers.Main){
+                        _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(it))
+                    }
+                }
                 .collect{
                     handleGetSupportModelResult(resultBean = it)?.apply {
                         _SDWebUICreateState.emit(SDWebUICreateState.GetSupportModelSuccess(this))
@@ -248,6 +264,11 @@ class SDWebUICreateViewModel : ViewModel() {
                    }
                }
                .flowOn(Dispatchers.IO)
+               .catch {
+                   withContext(Dispatchers.Main){
+                       _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(it))
+                   }
+               }
                .collect{
                    handleChangeModelResult(resultBean = it)?.apply {
                        _SDWebUICreateState.emit(
@@ -275,6 +296,11 @@ class SDWebUICreateViewModel : ViewModel() {
                     }
                 }
                 .flowOn(Dispatchers.IO)
+                .catch {
+                    withContext(Dispatchers.Main){
+                        _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(it))
+                    }
+                }
                 .collect{
                     it.data.takeIf {
                         it.isNotEmpty() && it.size == 3
@@ -303,12 +329,17 @@ class SDWebUICreateViewModel : ViewModel() {
                 imageBase64 = imageBase64,
                 sessionHash = sessionHash
             )
-                .flowOn(Dispatchers.IO)
                 .onStart {
-                withContext(Dispatchers.Main) {
-                    _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                    withContext(Dispatchers.Main) {
+                        _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                    }
                 }
-            }
+                .flowOn(Dispatchers.IO)
+                .catch {
+                    withContext(Dispatchers.Main){
+                        _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(it))
+                    }
+                }
                 .collect{
                     it.data.takeIf {
                         it.isNotEmpty()
@@ -336,12 +367,18 @@ class SDWebUICreateViewModel : ViewModel() {
             SDWebUIRepo.deepBooruReversePrompt(
                 imageBase64 = imageBase64,
                 sessionHash = sessionHash
-            ).flowOn(Dispatchers.IO)
+            )
                 .onStart {
-                withContext(Dispatchers.Main) {
-                    _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                    withContext(Dispatchers.Main) {
+                        _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                    }
                 }
-            }
+                .flowOn(Dispatchers.IO)
+                .catch {
+                    withContext(Dispatchers.Main){
+                        _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(it))
+                    }
+                }
                 .collect{
                     it.data.takeIf {
                         it.isNotEmpty()
@@ -368,10 +405,16 @@ class SDWebUICreateViewModel : ViewModel() {
                 negationPrompt = negation,
                 sessionHash = sessionHash
             )
-                .flowOn(Dispatchers.IO)
                 .onStart {
                     withContext(Dispatchers.Main) {
                         _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                    }
+                }
+                .flowOn(Dispatchers.IO)
+
+                .catch {
+                    withContext(Dispatchers.Main){
+                        _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(it))
                     }
                 }
                 .collect{
@@ -401,10 +444,15 @@ class SDWebUICreateViewModel : ViewModel() {
                 imageBase64 = imageBase64,
                 sessionHash = sessionHash
             )
-                .flowOn(Dispatchers.IO)
                 .onStart {
                     withContext(Dispatchers.Main) {
                         _SDWebUICreateState.emit(SDWebUICreateState.Creating)
+                    }
+                }
+                .flowOn(Dispatchers.IO)
+                .catch {
+                    withContext(Dispatchers.Main){
+                        _SDWebUICreateState.emit(SDWebUICreateState.ImageCreateError(it))
                     }
                 }
                 .collect{

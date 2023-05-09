@@ -343,6 +343,14 @@ class ControlNetFragment: Fragment() {
                         parentFragmentManager,
                         LoadingDialog.TAG
                     )
+                }else if(it is SDWebUICreateState.ImageCreateError){
+                    if(loadingDialog.isVisible){
+                        loadingDialog.dismissAllowingStateLoss()
+                    }
+                    ExUtil.toast(
+                        requireContext(),
+                        R.string.network_error
+                    )
                 }
                 else if(it is SDWebUICreateState.PreprocessSuccess){
                     if(loadingDialog.isVisible){
@@ -352,6 +360,68 @@ class ControlNetFragment: Fragment() {
                         val cacheImagePath = ImageUtil.getCacheImagePath(requireContext())
                         val decode = ImageUtil.base64ToFile(s , cacheImagePath)
                         if(decode){
+                            when(index){
+                                0 -> {
+                                    controlNetViewModel.getCanny()?.let {
+                                        if(it){
+                                            cannyLayou.visibility = View.VISIBLE
+                                            Glide.with(requireContext())
+                                                .load(File(cacheImagePath))
+                                                .into(cannyImage)
+                                            return@forEachIndexed
+                                        }
+                                    }
+                                    controlNetViewModel.getSeg()?.let {
+                                        if(it){
+                                            segLayout.visibility = View.VISIBLE
+                                            Glide.with(requireContext())
+                                                .load(File(cacheImagePath))
+                                                .into(segImage)
+                                        }
+                                    }
+
+                                    controlNetViewModel.getLeRes()?.let {
+                                        if(it){
+                                            leresLayout.visibility = View.VISIBLE
+                                            Glide.with(requireContext())
+                                                .load(File(cacheImagePath))
+                                                .into(leresImage)
+                                        }
+                                    }
+                                }
+                                1 -> {
+                                    controlNetViewModel.getSeg()?.let {
+                                        if(it){
+                                            segLayout.visibility = View.VISIBLE
+                                            Glide.with(requireContext())
+                                                .load(File(cacheImagePath))
+                                                .into(segImage)
+                                        }
+                                        return@forEachIndexed
+                                    }
+
+                                    controlNetViewModel.getLeRes()?.let {
+                                        if(it){
+                                            leresLayout.visibility = View.VISIBLE
+                                            Glide.with(requireContext())
+                                                .load(File(cacheImagePath))
+                                                .into(leresImage)
+                                        }
+                                    }
+                                }
+                                2 -> {
+
+                                    controlNetViewModel.getLeRes()?.let {
+                                        if(it){
+                                            leresLayout.visibility = View.VISIBLE
+                                            Glide.with(requireContext())
+                                                .load(File(cacheImagePath))
+                                                .into(leresImage)
+                                        }
+                                        return@forEachIndexed
+                                    }
+                                }
+                            }
                             controlNetViewModel.getCanny()?.let {
                                 if(it){
                                     cannyLayou.visibility = View.VISIBLE
